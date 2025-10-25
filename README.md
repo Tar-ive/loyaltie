@@ -23,6 +23,7 @@ npm run persona
 
 ## Project Structure
 
+- `/loyaltie` - Agentic chat logic
 - `/src` - Source code files
 - `/docs` - Documentation
 - `/scripts` - Utility scripts
