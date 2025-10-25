@@ -1,0 +1,13 @@
+[
+  {
+    "timestamp": "2025-10-25T06:37:14Z",
+    "category": "architectural_choice",
+    "decision": "Snowflake locked as analytics warehouse",
+    "context": "Standardize Clay Pit's analytical and machine learning workloads on Snowflake for scalability and ecosystem alignment.",
+    "implications": [
+      "ELT pipelines and BI tooling will target Snowflake as the definitive warehouse",
+      "Data contracts and governance must accommodate Snowflake schemas and role hierarchy",
+      "Future analytics enhancements should evaluate Snowflake-native capabilities first"
+    ]
+  }
+]

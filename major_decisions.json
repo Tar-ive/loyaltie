@@ -9,5 +9,57 @@
       "Data contracts and governance must accommodate Snowflake schemas and role hierarchy",
       "Future analytics enhancements should evaluate Snowflake-native capabilities first"
     ]
+  },
+  {
+    "timestamp": "2025-10-25T16:52:00Z",
+    "category": "rejected_design",
+    "decision": "Rejected: Multi-clone hypothesis testing CLI",
+    "context": "Initial proposal was to build a hypothesis testing system that simulates owner questions across 10-15 different customer personas (clones) to evaluate business decisions like menu changes, pricing, or service offerings.",
+    "rejection_reason": "User clarified they only have one detailed customer persona (Aniket Sharma from NVIDIA), not multiple customer clones. The multi-persona simulation approach was misaligned with the actual use case.",
+    "what_was_proposed": [
+      "Owner asks question → LLM extracts hypotheses → Simulate across 10-15 customer personas",
+      "Each persona represented different demographics, preferences, price sensitivity",
+      "Concurrent simulations to gather diverse feedback",
+      "Aggregate sentiment analysis across persona types",
+      "Generate insights based on persona-specific responses"
+    ],
+    "why_rejected": "Only working with single persona (Aniket), not multiple customer types"
+  },
+  {
+    "timestamp": "2025-10-25T16:52:00Z",
+    "category": "rejected_design",
+    "decision": "Rejected: Single-persona multi-scenario hypothesis testing CLI",
+    "context": "Second proposal adapted to single persona (Aniket) but generated multiple scenario variants to test hypotheses across different contexts (time of day, budget levels, event types, communication channels).",
+    "rejection_reason": "User clarified the actual need was a straightforward customer service chatbot, not a hypothesis testing/simulation system. The scenario-matrix approach was over-engineered for the requirement.",
+    "what_was_proposed": [
+      "Owner asks question → LLM extracts hypotheses → Generate scenario matrix",
+      "Scenario dimensions: time_of_day × budget × event_type × channel",
+      "Simulate Aniket's response in each scenario variant (e.g., 'Monday 9am + $1200 budget + team lunch')",
+      "Sentiment analysis per scenario",
+      "Generate insights about which contexts work best for a given hypothesis",
+      "Complex flow with hypothesis detection, scenario generation, concurrent simulations"
+    ],
+    "why_rejected": "User wanted a normal multi-turn customer service chat, not a hypothesis testing system"
+  },
+  {
+    "timestamp": "2025-10-25T16:52:00Z",
+    "category": "design_choice",
+    "decision": "Accepted: Persona-aware customer service CLI",
+    "context": "Final design is a straightforward multi-turn chatbot where the agent speaks TO Aniket (or user playing as Aniket), using his detailed persona to anticipate preferences and adapt communication style.",
+    "rationale": "Simpler design that matches actual use case: a customer service agent that knows the customer's profile and provides personalized service.",
+    "implementation": [
+      "Single Agent with rich system prompt containing Aniket's full persona",
+      "Time-aware behavior (auto-detects or override with --time flag)",
+      "Multi-turn conversation loop (similar to existing chat-ordering-cli.ts)",
+      "No hypothesis extraction, no scenario generation, no simulations",
+      "Just a smart agent that knows customer preferences and adapts accordingly"
+    ],
+    "key_features": [
+      "Loads aniket_profile.json with detailed persona data",
+      "Adapts tone based on time of day (structured AM, efficient midday, collaborative PM, urgent evening)",
+      "Knows favorite dishes, dietary requirements, budget ranges",
+      "Uses tech analogies, provides Slack-ready bullet summaries",
+      "Remembers NVIDIA milestones and sustainability values"
+    ]
   }
 ]
