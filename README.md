@@ -9,6 +9,7 @@ A customer loyalty and ordering system built for the AITX Hackathon.
 
 ## Installation
 
+
 ```bash
 npm install
 ```

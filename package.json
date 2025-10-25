@@ -10,7 +10,7 @@
   "scripts": {
     "chat": "tsx chat-ordering-cli.ts",
     "workflow": "tsx chat-ordering-workflow.ts",
-    "persona": "tsx src/persona-chat-cli.ts",
+    "persona": "tsx rc/persona-chat-cli.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
