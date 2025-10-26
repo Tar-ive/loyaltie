@@ -1,8 +1,69 @@
+# Environment variables
 .env
-.claude-flow/
-.claude/
+.env.local
+.env.*.local
+
+# Dependencies
+node_modules/
+*/node_modules/
+frontend/node_modules/
+
+# Build outputs
+.next/
+.next/*
+out/
+dist/
+build/
+
+# Logs
 *.log
-supabase/.temp/
-supabase/.branches/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Sessions data (runtime data)
+sessions/
+*.jsonl
+
+# Testing
+coverage/
+.nyc_output/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Python (legacy backend - now removed)
 backend/venv/
 backend/.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Temporary files
+.cache/
+.tmp/
+tmp/
+temp/
+
+# Claude-specific
+.claude-flow/
+.claude/
+
+# Supabase
+supabase/.temp/
+supabase/.branches/
+
+# TypeScript
+*.tsbuildinfo
+
+# Misc
+.vercel
