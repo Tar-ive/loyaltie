@@ -1,5 +1,6 @@
 import "dotenv/config";
 import { Agent, AgentInputItem, Runner, withTrace } from "@openai/agents";
+import { getReasoningModel } from "../config/model-config";
 
 /** ---------- Types ---------- */
 export type WorkflowInput = { input_as_text: string };
@@ -43,7 +44,7 @@ export const greeting = new Agent({
     "Task: Acknowledge the user's request in one short sentence and ask at most ONE missing key detail if needed.",
     "If the user already stated what they want, do not ask extra questions. Keep it brief.",
   ].join("\n"),
-  model: "gpt-5",
+  model: getReasoningModel(),
   modelSettings: { reasoning: { effort: "low" }, store: true },
 });
 
@@ -62,7 +63,7 @@ export const ordering = new Agent({
     '  "confirmation_prompt"?: string',
     "}",
   ].join("\n"),
-  model: "gpt-5",
+  model: getReasoningModel(),
   modelSettings: { reasoning: { effort: "low" }, store: true },
 });
 
@@ -78,7 +79,7 @@ export const finalizer = new Agent({
     "- Clear next step (e.g., 'You'll receive an email shortly').",
     "Keep it to 5-7 lines max.",
   ].join("\n"),
-  model: "gpt-5",
+  model: getReasoningModel(),
   modelSettings: { reasoning: { effort: "low" }, store: true },
 });
 

@@ -3,6 +3,7 @@ import path from "node:path";
 import { Agent, AgentInputItem, Runner } from "@openai/agents";
 import { SystemLogger, LogCategory } from "../logging/system-logger";
 import { AniketProfile } from "../persona-agent";
+import { getDefaultModel } from "../config/model-config";
 
 export interface ProfileUpdateCandidate {
   field: string;
@@ -82,7 +83,7 @@ Rules:
       const extractionAgent = new Agent({
         name: "ProfileExtractor",
         instructions: extractionPrompt,
-        model: "gpt-4.1",
+        model: getDefaultModel(),
         modelSettings: { temperature: 0.1, store: true },
       });
 

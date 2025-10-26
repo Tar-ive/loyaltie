@@ -67,3 +67,10 @@ supabase/.branches/
 
 # Misc
 .vercel
+node_modules
+
+# Python virtualenv
+venv/
+
+# Swarm runtime state
+.swarm/

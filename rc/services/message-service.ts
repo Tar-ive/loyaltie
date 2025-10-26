@@ -3,6 +3,7 @@ import { Runner, AgentInputItem } from "@openai/agents";
 import { loadAniketProfile, getCurrentTimeContext, createPersonaAgent } from "../persona-agent";
 import { SystemLogger } from "../logging/system-logger";
 import { loadOrderHistory } from "../utils/data-loader";
+import { performanceTracker } from "../utils/performance-tracker";
 
 export interface SendMessageResult {
   session_id: string;
@@ -19,6 +20,17 @@ export interface CreateSessionResult {
  * Send a message to an existing session and get agent response
  */
 export async function sendMessage(sessionId: string, message: string): Promise<SendMessageResult> {
+  // Generate request ID for tracking
+  const requestId = `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  
+  // Determine provider and model
+  const useNemotron = process.env.USE_NEMOTRON === 'true';
+  const provider = useNemotron ? 'openrouter' : 'openai';
+  const modelName = useNemotron ? 'nvidia/llama-3.1-nemotron-ultra-253b-v1' : 'gpt-4.1';
+  
+  // Start performance tracking
+  const startTime = performanceTracker.startRequest(requestId, modelName, provider, message);
+  
   try {
     // Load session
     const sessionManager = new SessionManager();
@@ -37,6 +49,7 @@ export async function sendMessage(sessionId: string, message: string): Promise<S
       traceMetadata: {
         __trace_source__: "message-service",
         sessionId: sessionId,
+        requestId: requestId,
       },
     });
 
@@ -56,6 +69,8 @@ export async function sendMessage(sessionId: string, message: string): Promise<S
       throw new Error("Agent did not produce a response");
     }
 
+    const responseContent = response.finalOutput.trim();
+
     // Add agent response to history
     conversationHistory.push(...response.newItems.map((item) => item.rawItem));
 
@@ -65,12 +80,34 @@ export async function sendMessage(sessionId: string, message: string): Promise<S
       orderState: session.state.orderState || {},
     });
 
+    // End performance tracking (estimate token usage)
+    performanceTracker.endRequest(
+      requestId,
+      startTime,
+      modelName,
+      provider,
+      message,
+      responseContent,
+      {
+        prompt: Math.ceil(message.length / 4),
+        completion: Math.ceil(responseContent.length / 4),
+        total: Math.ceil((message.length + responseContent.length) / 4),
+      }
+    );
+
     return {
       session_id: sessionId,
-      response: response.finalOutput.trim(),
+      response: responseContent,
       order_state: session.state.orderState || {},
     };
   } catch (error) {
+    // Record error in performance tracker
+    performanceTracker.recordError(
+      requestId,
+      modelName,
+      provider,
+      error instanceof Error ? error.message : String(error)
+    );
     throw new Error(error instanceof Error ? error.message : String(error));
   }
 }
