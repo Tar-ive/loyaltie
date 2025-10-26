@@ -40,7 +40,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
   }, [message]);
   
   return (
-    <form onSubmit={handleSubmit} className="flex items-end space-x-2 md:space-x-3 p-3 md:p-4 bg-white border-t border-secondary-200">
+    <form onSubmit={handleSubmit} className="flex items-center space-x-2 md:space-x-3 p-3 md:p-4 bg-white border-t border-secondary-200">
       <div className="flex-1">
         <textarea
           ref={textareaRef}
@@ -57,7 +57,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
       <Button
         type="submit"
         disabled={!message.trim() || disabled}
-        className="px-3 md:px-4 py-2 md:py-3"
+        className="px-3 md:px-4 py-3 md:py-3 h-[44px] flex items-center justify-center"
       >
         <Send size={18} className="md:w-5 md:h-5" />
       </Button>

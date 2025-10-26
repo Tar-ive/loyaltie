@@ -1,5 +1,5 @@
 import React from 'react';
-import { Plus, MessageSquare, User } from 'lucide-react';
+import { Plus, MessageSquare, User, X } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Card } from '../ui/Card';
 
@@ -23,6 +23,7 @@ interface SidebarProps {
   onNewSession: () => void;
   onSelectSession: (sessionId: string) => void;
   customerName?: string;
+  onClose?: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -31,23 +32,37 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onNewSession,
   onSelectSession,
   customerName = 'Customer',
+  onClose,
 }) => {
   return (
     <div className="w-full md:w-80 bg-white border-r border-gray-200 flex flex-col h-full">
       {/* Header */}
       <div className="p-4 md:p-6 border-b border-gray-200">
-        <div className="flex items-center space-x-3 mb-4">
-          <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
-            <MessageSquare className="w-6 h-6 text-white" />
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+              <MessageSquare className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h1 className="text-lg font-semibold text-gray-900">
+                EchoEats
+              </h1>
+              <p className="text-sm text-gray-600">
+                AI Customer Service
+              </p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-lg font-semibold text-gray-900">
-              EchoEats
-            </h1>
-            <p className="text-sm text-gray-600">
-              AI Customer Service
-            </p>
-          </div>
+
+          {/* Close button - only visible on mobile */}
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              aria-label="Close sidebar"
+            >
+              <X size={20} className="text-gray-600" />
+            </button>
+          )}
         </div>
         
         <Button

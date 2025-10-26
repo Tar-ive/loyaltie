@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { ArrowLeft } from 'lucide-react';
 import { ChatMessages } from './ChatMessages';
 import { ChatInput } from './ChatInput';
 import { sessionApi, messageApi, Session, MessageResponse } from '../../lib/api';
@@ -8,12 +9,14 @@ interface ChatInterfaceProps {
   sessionId: string;
   customerName: string;
   onSessionUpdate?: (session: Session) => void;
+  onBack?: () => void;
 }
 
 export const ChatInterface: React.FC<ChatInterfaceProps> = ({
   sessionId,
   customerName,
   onSessionUpdate,
+  onBack,
 }) => {
   const [messages, setMessages] = useState<Array<{
     role: 'user' | 'assistant';
@@ -103,7 +106,18 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
       {/* Chat Header */}
       <div className="p-3 md:p-4 border-b border-gray-200 bg-white">
         <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 md:w-10 md:h-10 bg-blue-500 rounded-full flex items-center justify-center">
+          {/* Back button - only visible on mobile */}
+          {onBack && (
+            <button
+              onClick={onBack}
+              className="md:hidden flex-shrink-0 p-2 -ml-2 hover:bg-gray-100 rounded-lg transition-colors"
+              aria-label="Back to conversations"
+            >
+              <ArrowLeft size={20} className="text-gray-600" />
+            </button>
+          )}
+
+          <div className="w-8 h-8 md:w-10 md:h-10 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
             <span className="text-white font-medium text-xs md:text-sm">
               {customerName.charAt(0).toUpperCase()}
             </span>
