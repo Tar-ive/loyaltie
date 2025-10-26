@@ -101,17 +101,17 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
   return (
     <div className="flex flex-col h-full">
       {/* Chat Header */}
-      <div className="p-4 border-b border-gray-200 bg-white">
+      <div className="p-3 md:p-4 border-b border-gray-200 bg-white">
         <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
-            <span className="text-white font-medium text-sm">
+          <div className="w-8 h-8 md:w-10 md:h-10 bg-blue-500 rounded-full flex items-center justify-center">
+            <span className="text-white font-medium text-xs md:text-sm">
               {customerName.charAt(0).toUpperCase()}
             </span>
           </div>
-          <div>
-            <h2 className="font-medium text-gray-900">{customerName}</h2>
-            <p className="text-sm text-gray-600">
-              {isTyping ? 'AI is typing...' : 'Online'}
+          <div className="min-w-0 flex-1">
+            <h2 className="font-medium text-gray-900 text-sm md:text-base truncate">{customerName}</h2>
+            <p className="text-xs md:text-sm text-gray-600">
+              {isTyping ? 'EchoEats is typing...' : 'Online'}
             </p>
           </div>
         </div>

@@ -27,12 +27,12 @@ export const ChatMessages: React.FC<ChatMessagesProps> = ({
   }, [messages, isTyping]);
   
   return (
-    <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin">
+    <div className="flex-1 overflow-y-auto p-3 md:p-4 space-y-3 md:space-y-4 scrollbar-thin">
       {messages.length === 0 ? (
-        <div className="flex flex-col items-center justify-center h-full text-center">
-          <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mb-4">
+        <div className="flex flex-col items-center justify-center h-full text-center px-4">
+          <div className="w-12 h-12 md:w-16 md:h-16 bg-primary-100 rounded-full flex items-center justify-center mb-4">
             <svg
-              className="w-8 h-8 text-primary-500"
+              className="w-6 h-6 md:w-8 md:h-8 text-primary-500"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -45,12 +45,12 @@ export const ChatMessages: React.FC<ChatMessagesProps> = ({
               />
             </svg>
           </div>
-          <h3 className="text-lg font-medium text-secondary-900 mb-2">
-            Welcome to Clay Pit Chat
+          <h3 className="text-base md:text-lg font-medium text-secondary-900 mb-2">
+            Welcome to EchoEats
           </h3>
-          <p className="text-secondary-600 max-w-md">
-            I'm your AI assistant for Clay Pit restaurant. I can help you with orders, 
-            menu questions, reservations, and more. How can I assist you today?
+          <p className="text-sm md:text-base text-secondary-600 max-w-md">
+            I'm your AI assistant for food ordering. I can help you with orders,
+            menu questions, dietary preferences, and more. How can I assist you today?
           </p>
         </div>
       ) : (

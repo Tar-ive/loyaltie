@@ -20,32 +20,32 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
   return (
     <div
       className={clsx(
-        'flex items-start space-x-3 mb-4 animate-slide-up',
+        'flex items-start space-x-2 md:space-x-3 mb-3 md:mb-4 animate-slide-up',
         isUser ? 'flex-row-reverse space-x-reverse' : 'flex-row'
       )}
     >
       {/* Avatar */}
       <div
         className={clsx(
-          'flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center',
+          'flex-shrink-0 w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center',
           isUser
             ? 'bg-primary-500 text-white'
             : 'bg-secondary-100 text-secondary-600'
         )}
       >
-        {isUser ? <User size={16} /> : <Bot size={16} />}
+        {isUser ? <User size={14} className="md:w-4 md:h-4" /> : <Bot size={14} className="md:w-4 md:h-4" />}
       </div>
-      
+
       {/* Message Content */}
       <div
         className={clsx(
-          'max-w-xs lg:max-w-md px-4 py-3 rounded-lg',
+          'max-w-[75%] sm:max-w-xs lg:max-w-md px-3 md:px-4 py-2 md:py-3 rounded-lg',
           isUser
             ? 'bg-primary-500 text-white'
             : 'bg-secondary-100 text-secondary-900'
         )}
       >
-        <div className="text-sm leading-relaxed">
+        <div className="text-xs md:text-sm leading-relaxed">
           {isTyping ? (
             <div className="flex space-x-1">
               <div className="w-2 h-2 bg-current rounded-full animate-bounce-gentle"></div>

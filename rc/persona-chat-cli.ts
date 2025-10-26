@@ -83,7 +83,7 @@ async function askYesNo(
 }
 
 async function main() {
-  console.log(colorize("\n=== Clay Pit Customer Service Agent ===\n", "cyan"));
+  console.log(colorize("\n=== EchoEats Customer Service Agent ===\n", "cyan"));
 
   // Load Aniket's profile
   console.log(colorize("Loading customer profile...", "gray"));

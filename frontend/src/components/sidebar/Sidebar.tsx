@@ -33,16 +33,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
   customerName = 'Customer',
 }) => {
   return (
-    <div className="w-80 bg-white border-r border-gray-200 flex flex-col h-full">
+    <div className="w-full md:w-80 bg-white border-r border-gray-200 flex flex-col h-full">
       {/* Header */}
-      <div className="p-6 border-b border-gray-200">
+      <div className="p-4 md:p-6 border-b border-gray-200">
         <div className="flex items-center space-x-3 mb-4">
           <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
             <MessageSquare className="w-6 h-6 text-white" />
           </div>
           <div>
             <h1 className="text-lg font-semibold text-gray-900">
-              Clay Pit Chat
+              EchoEats
             </h1>
             <p className="text-sm text-gray-600">
               AI Customer Service
@@ -61,21 +61,21 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
       
       {/* Customer Info */}
-      <div className="px-6 py-4 border-b border-gray-200">
+      <div className="px-4 md:px-6 py-4 border-b border-gray-200">
         <div className="flex items-center space-x-3">
           <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
             <User size={16} className="text-gray-600" />
           </div>
-          <div>
-            <p className="text-sm font-medium text-gray-900">{customerName}</p>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-medium text-gray-900 truncate">{customerName}</p>
             <p className="text-xs text-gray-600">Active Customer</p>
           </div>
         </div>
       </div>
-      
+
       {/* Sessions List */}
       <div className="flex-1 overflow-y-auto p-4 space-y-2">
-        <h3 className="text-sm font-medium text-gray-700 mb-3">
+        <h3 className="text-xs md:text-sm font-medium text-gray-700 mb-3">
           Recent Conversations
         </h3>
         

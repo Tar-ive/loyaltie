@@ -149,7 +149,7 @@ export function buildSystemPrompt(
   timeContext: TimeContext,
   orderHistory?: OrderHistory[]
 ): string {
-  return `You are Clay Pit's customer service agent speaking with ${profile.identity.name}.
+  return `You are EchoEats' customer service agent speaking with ${profile.identity.name}.
 
 COMMUNICATION RULES (CRITICAL - OPTIMIZED FOR VOICE):
 - Speak naturally like you're having a phone conversation.
@@ -259,7 +259,7 @@ export function createPersonaAgent(
   const systemPrompt = buildSystemPrompt(profile, timeContext, orderHistory);
 
   return new Agent({
-    name: "ClayPitPersonaAgent",
+    name: "EchoEatsPersonaAgent",
     instructions: systemPrompt,
     model: "gpt-4.1",
     modelSettings: {

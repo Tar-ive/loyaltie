@@ -96,18 +96,20 @@ export default function Home() {
   }
 
   return (
-    <div className="h-screen flex bg-gray-50">
-      {/* Sidebar */}
-      <Sidebar
-        sessions={sessions}
-        currentSessionId={currentSessionId}
-        onNewSession={handleNewSession}
-        onSelectSession={handleSelectSession}
-        customerName={currentCustomerName}
-      />
+    <div className="h-screen flex flex-col md:flex-row bg-gray-50 overflow-hidden">
+      {/* Sidebar - Hidden on mobile when chat is active */}
+      <div className={`${currentSessionId ? 'hidden md:flex' : 'flex'} md:w-80 w-full`}>
+        <Sidebar
+          sessions={sessions}
+          currentSessionId={currentSessionId}
+          onNewSession={handleNewSession}
+          onSelectSession={handleSelectSession}
+          customerName={currentCustomerName}
+        />
+      </div>
 
       {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col">
+      <div className={`${currentSessionId ? 'flex' : 'hidden md:flex'} flex-1 flex-col min-w-0`}>
         {console.log('Rendering - currentSessionId:', currentSessionId, 'currentCustomerName:', currentCustomerName)}
         {currentSessionId ? (
           <ChatInterface
@@ -116,11 +118,11 @@ export default function Home() {
             onSessionUpdate={handleSessionUpdate}
           />
         ) : (
-          <div className="flex-1 flex items-center justify-center">
-            <div className="text-center max-w-md">
-              <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+          <div className="flex-1 flex items-center justify-center p-4">
+            <div className="text-center max-w-md px-4">
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
                 <svg
-                  className="w-10 h-10 text-blue-500"
+                  className="w-8 h-8 md:w-10 md:h-10 text-blue-500"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -133,15 +135,15 @@ export default function Home() {
                   />
                 </svg>
               </div>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-                Welcome to Clay Pit Chat
+              <h2 className="text-xl md:text-2xl font-semibold text-gray-900 mb-4">
+                Welcome to EchoEats
               </h2>
-              <p className="text-gray-600 mb-6">
+              <p className="text-sm md:text-base text-gray-600 mb-6">
                 Start a new conversation to begin chatting with our AI assistant.
               </p>
               <button
                 onClick={handleNewSession}
-                className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors w-full md:w-auto"
               >
                 Start New Conversation
               </button>
