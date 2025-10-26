@@ -97,5 +97,25 @@
     "wednesday_pm": "Collaborative mode - open to exploring new tandoor specials or cocktail infusions",
     "friday_late_afternoon": "Relaxes; might ask about weekend dinner reservations with visiting clients",
     "event_day_delivery": "Demands precision; appreciative if agent shares GPS ETA and staging tips"
+  },
+  "delivery_addresses": [
+    "NVIDIA HQ, 2788 San Tomas Expressway, Santa Clara, CA",
+    "NVIDIA Austin Office, Building 2, 500 W 2nd St, Austin, TX"
+  ],
+  "contact_methods": {
+    "primary_phone": null,
+    "backup_email": null,
+    "preferred_contact_time": "During business hours (9am-6pm)"
+  },
+  "learned_preferences": {
+    "last_updated": "2025-10-25T00:00:00Z",
+    "frequent_event_types": [
+      "team lunch",
+      "hackathon catering",
+      "executive meetings",
+      "product launch celebrations"
+    ],
+    "typical_headcount_range": [12, 30],
+    "notes": "Prefers same-day confirmation emails, always requests vegetarian options, values transparency in pricing"
   }
 }

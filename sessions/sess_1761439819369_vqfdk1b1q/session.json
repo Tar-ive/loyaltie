@@ -1,0 +1,117 @@
+{
+  "metadata": {
+    "sessionId": "sess_1761439819369_vqfdk1b1q",
+    "customerId": "aniket-sharma-nvidia",
+    "customerName": "Aniket Sharma",
+    "createdAt": "2025-10-26T00:50:19.369Z",
+    "lastAccessedAt": "2025-10-26T00:54:02.243Z",
+    "status": "active",
+    "conversationTurns": 4,
+    "ordersPlaced": 1
+  },
+  "state": {
+    "conversationHistory": [
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "input_text",
+            "text": "hi"
+          }
+        ]
+      },
+      {
+        "id": "msg_08c5179b982dbfc00068fd712d14a88196a1001a770081658a",
+        "type": "message",
+        "role": "assistant",
+        "content": [
+          {
+            "type": "output_text",
+            "text": "Hi Aniket. How can I help—urgent catering or planning ahead?",
+            "annotations": [],
+            "logprobs": []
+          }
+        ],
+        "status": "completed",
+        "providerData": {}
+      },
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "input_text",
+            "text": "bulk orders"
+          }
+        ]
+      },
+      {
+        "id": "msg_08c5179b982dbfc00068fd7137d1dc81968eba9e4affc9ad84",
+        "type": "message",
+        "role": "assistant",
+        "content": [
+          {
+            "type": "output_text",
+            "text": "Got it—bulk order request.  \nIs this for a team meal, event, or something else?  \nNeed headcount and preferred delivery date/time.",
+            "annotations": [],
+            "logprobs": []
+          }
+        ],
+        "status": "completed",
+        "providerData": {}
+      },
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "input_text",
+            "text": "for 40 people, the same order as last week, did i order for 40 people last week? i dont remember what the quantities were. "
+          }
+        ]
+      },
+      {
+        "id": "msg_08c5179b982dbfc00068fd7158f5dc8196bb874010ba61f4ae",
+        "type": "message",
+        "role": "assistant",
+        "content": [
+          {
+            "type": "output_text",
+            "text": "Last week’s order was for 30 people (Order #5 on 2025-09-25). Here’s what you ordered:\n\n- 30× Chicken Biryani\n- 30× Butter Chicken\n- 20× Kothmir Salmon\n- 30× Garlic & Basil Naan\n- 10× Plain Naan\n- 20× Coconut Curry\n- 20× Cucumber Salad\n- 15× Vegan Chocolate Cake\n- 15× Gulab Jamun\n- 20× Mango Margarita\n\nFor 40 people, would you like me to scale up each item by ~33% and recap?",
+            "annotations": [],
+            "logprobs": []
+          }
+        ],
+        "status": "completed",
+        "providerData": {}
+      },
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "input_text",
+            "text": "Order confirmed. Order ID: ORD-CLY-20251026-791"
+          }
+        ]
+      },
+      {
+        "id": "msg_08c5179b982dbfc00068fd717499a88196969030dd1c57b04b",
+        "type": "message",
+        "role": "assistant",
+        "content": [
+          {
+            "type": "output_text",
+            "text": "Order received—ORD-CLY-20251026-791.\n\nScaled for 40 people, your order will be:\n\n- 40× Chicken Biryani\n- 40× Butter Chicken\n- 27× Kothmir Salmon\n- 40× Garlic & Basil Naan\n- 13× Plain Naan\n- 27× Coconut Curry\n- 27× Cucumber Salad\n- 20× Vegan Chocolate Cake\n- 20× Gulab Jamun\n- 27× Mango Margarita\n\nApplying 10% bulk discount.  \nFull itemized summary with cost breakdown will follow via Slack and email.  \nLet me know if you need adjustments for spice, allergies, or vegetarian headcount.",
+            "annotations": [],
+            "logprobs": []
+          }
+        ],
+        "status": "completed",
+        "providerData": {}
+      }
+    ],
+    "orderState": {
+      "phase": "chatting"
+    },
+    "contextVariables": {},
+    "profileUpdates": {}
+  }
+}

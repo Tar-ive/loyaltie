@@ -1,0 +1,4 @@
+{"timestamp":"2025-10-26T00:59:50.013Z","sessionId":"sess_1761440390009_7gyds520w","level":"info","category":"session_start","message":"Session started","data":{"customerId":"aniket-sharma-nvidia","customerName":"Aniket Sharma","sessionId":"sess_1761440390009_7gyds520w"}}
+{"timestamp":"2025-10-26T00:59:50.014Z","sessionId":"sess_1761440390009_7gyds520w","level":"info","category":"system_info","message":"Time context: evening"}
+{"timestamp":"2025-10-26T00:59:50.014Z","sessionId":"sess_1761440390009_7gyds520w","level":"debug","category":"data_load","message":"Starting: Load order history"}
+{"timestamp":"2025-10-26T00:59:50.016Z","sessionId":"sess_1761440390009_7gyds520w","level":"info","category":"data_load","message":"Completed: Load order history","duration":2}
