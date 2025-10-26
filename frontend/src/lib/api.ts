@@ -37,6 +37,9 @@ export interface MessageResponse {
   session_id: string;
   response: string;
   order_state?: Record<string, any>;
+  checkout_url?: string;
+  order_id?: string;
+  order_summary?: string;
 }
 
 export interface Conversation {

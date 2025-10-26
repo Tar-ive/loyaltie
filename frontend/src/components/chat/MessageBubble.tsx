@@ -53,7 +53,38 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
               <div className="w-2 h-2 bg-current rounded-full animate-bounce-gentle" style={{ animationDelay: '0.2s' }}></div>
             </div>
           ) : (
-            <p className="whitespace-pre-wrap">{message.content}</p>
+            <p className="whitespace-pre-wrap">
+              {message.content.split('\n').map((line, i) => {
+                // Detect URLs in the line
+                const urlRegex = /(https?:\/\/[^\s]+)/g;
+                const parts = line.split(urlRegex);
+
+                return (
+                  <React.Fragment key={i}>
+                    {parts.map((part, j) => {
+                      if (urlRegex.test(part)) {
+                        return (
+                          <a
+                            key={j}
+                            href={part}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={clsx(
+                              "underline font-medium hover:opacity-80 transition-opacity",
+                              isUser ? "text-white" : "text-blue-600"
+                            )}
+                          >
+                            {part}
+                          </a>
+                        );
+                      }
+                      return <span key={j}>{part}</span>;
+                    })}
+                    {i < message.content.split('\n').length - 1 && <br />}
+                  </React.Fragment>
+                );
+              })}
+            </p>
           )}
         </div>
         

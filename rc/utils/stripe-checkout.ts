@@ -1,3 +1,4 @@
+import Stripe from "stripe";
 import { OrderDraft } from "../session/session-manager";
 
 export interface CheckoutSession {
@@ -17,30 +18,92 @@ const COLORS = {
   bold: "\x1b[1m",
 };
 
+// Initialize Stripe
+const stripe = process.env.STRIPE_SECRET_KEY
+  ? new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: "2024-12-18.acacia" })
+  : null;
+
 export async function createCheckoutSession(
-  draft: OrderDraft
+  draft: OrderDraft,
+  customerEmail?: string
 ): Promise<CheckoutSession> {
-  // Generate mock checkout session
-  const sessionId = `cs_test_${Date.now()}_${Math.random()
-    .toString(36)
-    .substring(2, 9)}`;
-  const orderId = `ORD-CLY-${new Date()
+  const orderId = `ORD-ECH-${new Date()
     .toISOString()
     .split("T")[0]
     .replace(/-/g, "")}-${Math.floor(Math.random() * 1000)
     .toString()
     .padStart(3, "0")}`;
 
-  // Simulate processing delay
-  await new Promise((resolve) => setTimeout(resolve, 1500));
+  // If Stripe is not configured, return mock checkout
+  if (!stripe) {
+    console.warn("⚠️  Stripe not configured - using mock checkout");
+    const mockSessionId = `cs_test_${Date.now()}_${Math.random()
+      .toString(36)
+      .substring(2, 9)}`;
 
-  return {
-    sessionId,
-    checkoutUrl: `https://checkout.stripe.com/pay/${sessionId}`,
-    amount: draft.estimatedTotal || 0,
-    orderId,
-    timestamp: new Date(),
-  };
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+
+    return {
+      sessionId: mockSessionId,
+      checkoutUrl: `https://checkout.stripe.com/pay/${mockSessionId}`,
+      amount: draft.estimatedTotal || 0,
+      orderId,
+      timestamp: new Date(),
+    };
+  }
+
+  try {
+    // Calculate total amount in cents
+    const totalAmount = Math.round((draft.estimatedTotal || 0) * 100);
+
+    // Create line items from order draft
+    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = draft.items.map((item) => {
+      // Calculate price per item (distribute total evenly or use a default)
+      const pricePerItem = draft.estimatedTotal
+        ? Math.round((draft.estimatedTotal / draft.items.reduce((sum, i) => sum + i.quantity, 0)) * 100)
+        : 1500; // Default $15 per item if no total
+
+      return {
+        price_data: {
+          currency: "usd",
+          product_data: {
+            name: item.name,
+            description: item.notes || "EchoEats food order",
+          },
+          unit_amount: pricePerItem,
+        },
+        quantity: item.quantity,
+      };
+    });
+
+    // Create Stripe Checkout Session
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      line_items: lineItems,
+      mode: "payment",
+      success_url: `${process.env.FRONTEND_URL || "http://localhost:3000"}/success?session_id={CHECKOUT_SESSION_ID}&order_id=${orderId}`,
+      cancel_url: `${process.env.FRONTEND_URL || "http://localhost:3000"}/cancel`,
+      customer_email: customerEmail,
+      metadata: {
+        orderId,
+        deliveryDate: draft.deliveryDate || "",
+        deliveryAddress: draft.deliveryAddress || "",
+        contact: draft.contact || "",
+        items: JSON.stringify(draft.items),
+      },
+    });
+
+    return {
+      sessionId: session.id,
+      checkoutUrl: session.url!,
+      amount: draft.estimatedTotal || 0,
+      orderId,
+      timestamp: new Date(),
+    };
+  } catch (error) {
+    console.error("❌ Stripe checkout error:", error);
+    throw new Error(`Failed to create checkout session: ${error instanceof Error ? error.message : "Unknown error"}`);
+  }
 }
 
 export function displayCheckout(session: CheckoutSession): void {

@@ -69,20 +69,40 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
         content: response.response,
         timestamp: new Date().toISOString(),
       };
-      
+
       setMessages(prev => [...prev, assistantMessage]);
 
-      // Show order state if available
-      if (response.order_state) {
-        toast.success('Order updated!', {
-          duration: 3000,
+      // Handle checkout URL if order was confirmed
+      if (response.checkout_url && response.order_id) {
+        toast.success(`Order ${response.order_id} confirmed! Redirecting to checkout...`, {
+          duration: 5000,
+        });
+
+        // Add checkout link message
+        const checkoutMessage = {
+          role: 'assistant' as const,
+          content: `🎉 Great! Your order has been confirmed.\n\n💳 Click here to complete payment:\n${response.checkout_url}\n\nOrder ID: ${response.order_id}`,
+          timestamp: new Date().toISOString(),
+        };
+        setMessages(prev => [...prev, checkoutMessage]);
+
+        // Optional: Auto-redirect after a delay
+        // setTimeout(() => {
+        //   window.open(response.checkout_url, '_blank');
+        // }, 2000);
+      }
+
+      // Show order summary if available
+      if (response.order_summary && response.order_state?.phase === 'confirming') {
+        toast.success('Order ready for confirmation!', {
+          duration: 4000,
         });
       }
 
     } catch (error) {
       console.error('Failed to send message:', error);
       toast.error('Failed to send message. Please try again.');
-      
+
       // Remove the user message on error
       setMessages(prev => prev.slice(0, -1));
     } finally {
