@@ -2,6 +2,7 @@ import { Agent } from "@openai/agents";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { OrderHistory } from "./utils/data-loader";
+import { getDefaultModel } from "./config/model-config";
 
 export type AniketProfile = {
   customer_id: string;
@@ -261,7 +262,7 @@ export function createPersonaAgent(
   return new Agent({
     name: "EchoEatsPersonaAgent",
     instructions: systemPrompt,
-    model: "gpt-4.1",
+    model: getDefaultModel(),
     modelSettings: {
       temperature: 0.85, // Higher temperature for more natural, human-like voice conversation
       store: true,
