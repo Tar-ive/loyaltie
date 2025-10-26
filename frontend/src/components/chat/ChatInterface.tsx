@@ -38,9 +38,20 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
       setIsLoading(true);
       const conversation = await messageApi.getConversation(sessionId);
       setMessages(conversation.conversation || []);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to load conversation:', error);
-      toast.error('Failed to load conversation history');
+      
+      // Show specific error messages
+      if (error.response?.status === 500) {
+        toast.error('Server error: Cannot load conversation history. Backend API is having issues.');
+      } else if (error.response?.status === 404) {
+        toast.error('Conversation not found. This session may not exist.');
+      } else {
+        toast.error('Failed to load conversation history');
+      }
+      
+      // Set empty messages array as fallback
+      setMessages([]);
     } finally {
       setIsLoading(false);
     }
@@ -99,9 +110,17 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
         });
       }
 
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to send message:', error);
-      toast.error('Failed to send message. Please try again.');
+      
+      // Show more specific error messages
+      if (error.response?.status === 500) {
+        toast.error('Server error: Backend API is having issues. Please try again later.');
+      } else if (error.response?.status === 400) {
+        toast.error('Invalid request: Please check your message format.');
+      } else {
+        toast.error('Failed to send message. Please try again.');
+      }
 
       // Remove the user message on error
       setMessages(prev => prev.slice(0, -1));

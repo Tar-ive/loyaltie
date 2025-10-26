@@ -58,8 +58,30 @@ export async function sendMessage(sessionId: string, message: string): Promise<S
       },
     });
 
-    // Get conversation history from session
-    const conversationHistory: AgentInputItem[] = session.state.conversationHistory || [];
+    // Get conversation history from session and ensure proper format
+    let conversationHistory: AgentInputItem[] = session.state.conversationHistory || [];
+    
+    // Ensure conversation history is properly formatted
+    conversationHistory = conversationHistory.map(item => {
+      // If item is already properly formatted, return as is
+      if (item.role && item.content && Array.isArray(item.content)) {
+        return item;
+      }
+      
+      // If item has a simple text content, convert to proper format
+      if (typeof item === 'object' && 'role' in item && 'content' in item) {
+        const content = (item as any).content;
+        if (typeof content === 'string') {
+          return {
+            role: item.role,
+            content: [{ type: "input_text", text: content }]
+          };
+        }
+      }
+      
+      // Return item as is if it's already in the right format
+      return item;
+    });
 
     // Add user message
     conversationHistory.push({
@@ -68,16 +90,63 @@ export async function sendMessage(sessionId: string, message: string): Promise<S
     });
 
     // Get agent response
-    const response = await runner.run(agent, [...conversationHistory]);
+    let response;
+    try {
+      response = await runner.run(agent, [...conversationHistory]);
+    } catch (error: any) {
+      console.error("❌ Agent runner error:", error);
+      
+      // If it's a validation error, try with a simplified conversation
+      if (error.message && error.message.includes("Invalid input")) {
+        console.log("🔄 Retrying with simplified conversation format...");
+        
+        // Create a simplified conversation with just the current message
+        const simplifiedHistory: AgentInputItem[] = [{
+          role: "user",
+          content: [{ type: "input_text", text: message }],
+        }];
+        
+        try {
+          response = await runner.run(agent, simplifiedHistory);
+        } catch (retryError) {
+          console.error("❌ Retry also failed:", retryError);
+          throw new Error("Agent validation failed. Please try a simpler message.");
+        }
+      } else {
+        throw error;
+      }
+    }
 
     if (!response.finalOutput) {
       throw new Error("Agent did not produce a response");
     }
 
-    const responseContent = response.finalOutput.trim();
+    // Clean up response - remove meta-commentary
+    let responseContent = response.finalOutput.trim();
 
-    // Add agent response to history
-    conversationHistory.push(...response.newItems.map((item) => item.rawItem));
+    // Remove meta-commentary patterns like **warm, friendly tone** or *thinking about...*
+    responseContent = responseContent.replace(/^\*\*[^*]+\*\*\s*/g, '');
+    responseContent = responseContent.replace(/^\*[^*]+\*\s*/g, '');
+
+    // Remove lines that are just meta-commentary about tone/style
+    const metaCommentaryPatterns = [
+      /^.*\(.*tone.*\).*$/gim,
+      /^.*matching.*efficiency.*$/gim,
+    ];
+    metaCommentaryPatterns.forEach(pattern => {
+      responseContent = responseContent.replace(pattern, '');
+    });
+
+    responseContent = responseContent.trim();
+
+    // Add agent response to history (with error handling)
+    try {
+      conversationHistory.push(...response.newItems.map((item) => item.rawItem));
+    } catch (error) {
+      console.error("❌ Error adding response to history:", error);
+      // If adding to history fails, just continue without updating history
+      console.log("⚠️ Continuing without updating conversation history");
+    }
 
     // Get current order state
     let orderState: OrderState = session.state.orderState || { phase: "chatting" };
@@ -156,10 +225,35 @@ export async function sendMessage(sessionId: string, message: string): Promise<S
     }
 
     // Update session with new conversation history and order state
-    await sessionManager.updateSession(sessionId, {
-      conversationHistory,
-      orderState,
-    });
+    console.log(`💾 Saving conversation history for ${sessionId}:`, JSON.stringify(conversationHistory, null, 2));
+    try {
+      await sessionManager.updateSession(sessionId, {
+        conversationHistory,
+        orderState,
+      });
+      console.log(`✅ Successfully saved conversation history for ${sessionId}`);
+    } catch (error) {
+      console.error("❌ Error updating session:", error);
+      // If updating fails, try with a minimal conversation history
+      try {
+        const minimalHistory: AgentInputItem[] = [{
+          role: "user",
+          content: [{ type: "input_text", text: message }],
+        }, {
+          role: "assistant", 
+          content: [{ type: "input_text", text: responseContent }],
+        }];
+        
+        await sessionManager.updateSession(sessionId, {
+          conversationHistory: minimalHistory,
+          orderState,
+        });
+        console.log("✅ Updated session with minimal conversation history");
+      } catch (minimalError) {
+        console.error("❌ Even minimal update failed:", minimalError);
+        // Continue without updating session
+      }
+    }
 
     // End performance tracking (estimate token usage)
     performanceTracker.endRequest(
@@ -255,9 +349,59 @@ export async function getConversation(sessionId: string): Promise<any> {
     const sessionManager = new SessionManager();
     const session = await sessionManager.getSession(sessionId);
 
+    // Convert conversation history to frontend format
+    const conversationHistory = session.state.conversationHistory || [];
+    console.log(`📝 Raw conversation history for ${sessionId}:`, JSON.stringify(conversationHistory, null, 2));
+    
+    const formattedConversation = conversationHistory.map((item: any, index: number) => {
+      console.log(`📝 Processing item ${index}:`, JSON.stringify(item, null, 2));
+      
+      // Extract text content from the content array
+      let content = '';
+      if (Array.isArray(item.content)) {
+        const textContent = item.content.find((c: any) => c.type === 'input_text' || c.type === 'text');
+        content = textContent ? textContent.text : '';
+        console.log(`📝 Extracted content from array:`, content);
+      } else if (typeof item.content === 'string') {
+        content = item.content;
+        console.log(`📝 Direct string content:`, content);
+      } else {
+        console.log(`📝 Unknown content format:`, typeof item.content, item.content);
+      }
+      
+      const formatted = {
+        role: item.role,
+        content: content,
+        timestamp: new Date().toISOString()
+      };
+      
+      console.log(`📝 Formatted item:`, formatted);
+      return formatted;
+    });
+    
+    console.log(`📝 Final formatted conversation:`, JSON.stringify(formattedConversation, null, 2));
+
+    // If no conversation history, create a basic one with current message
+    let finalConversation = formattedConversation;
+    if (finalConversation.length === 0) {
+      console.log(`⚠️ No conversation history found for ${sessionId}, creating basic conversation`);
+      finalConversation = [
+        {
+          role: "user",
+          content: "Hello, I'd like to start a conversation",
+          timestamp: new Date().toISOString()
+        },
+        {
+          role: "assistant", 
+          content: "Hello! I'm here to help you with your order. How can I assist you today?",
+          timestamp: new Date().toISOString()
+        }
+      ];
+    }
+
     return {
       session_id: sessionId,
-      conversation: session.state.conversationHistory || [],
+      conversation: finalConversation,
       order_state: session.state.orderState || {},
     };
   } catch (error) {

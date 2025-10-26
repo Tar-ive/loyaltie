@@ -5,7 +5,7 @@ import { User, Bot } from 'lucide-react';
 interface MessageBubbleProps {
   message: {
     role: 'user' | 'assistant';
-    content: string;
+    content: string | any;
     timestamp?: string;
   };
   isTyping?: boolean;
@@ -54,7 +54,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
             </div>
           ) : (
             <p className="whitespace-pre-wrap">
-              {message.content.split('\n').map((line, i) => {
+              {String(message.content || '').split('\n').map((line, i) => {
                 // Detect URLs in the line
                 const urlRegex = /(https?:\/\/[^\s]+)/g;
                 const parts = line.split(urlRegex);
@@ -80,7 +80,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
                       }
                       return <span key={j}>{part}</span>;
                     })}
-                    {i < message.content.split('\n').length - 1 && <br />}
+                    {i < String(message.content || '').split('\n').length - 1 && <br />}
                   </React.Fragment>
                 );
               })}
