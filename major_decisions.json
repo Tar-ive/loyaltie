@@ -50,7 +50,7 @@
     "implementation": [
       "Single Agent with rich system prompt containing Aniket's full persona",
       "Time-aware behavior (auto-detects or override with --time flag)",
-      "Multi-turn conversation loop (similar to existing chat-ordering-cli.ts)",
+      "Multi-turn conversation loop (similar to existing rc/orders/chat-ordering-cli.ts)",
       "No hypothesis extraction, no scenario generation, no simulations",
       "Just a smart agent that knows customer preferences and adapts accordingly"
     ],
@@ -284,5 +284,42 @@
     ],
     "impact": "Medium - Users can work around by declining and restarting, but UX is not ideal for complex orders with many items",
     "priority": "High for production - essential for good UX"
+  },
+  {
+    "timestamp": "2025-10-26T00:00:00Z",
+    "category": "code_organization",
+    "decision": "Moved ordering CLIs to rc/orders subdirectory",
+    "context": "Project had ordering-related files (chat-ordering-cli.ts, chat-ordering-workflow.ts) at root level, while persona-aware system lived in rc/. Consolidating all agent-related code under rc/ improves organization.",
+    "rationale": "Better separation of concerns and scalability. Creates logical grouping where rc/orders/ contains order flow systems, while rc/ root contains persona-aware agents. Sets foundation for adding more agent types in future.",
+    "changes_made": [
+      "Created rc/orders/ subdirectory",
+      "Moved chat-ordering-cli.ts from root to rc/orders/",
+      "Moved chat-ordering-workflow.ts from root to rc/orders/",
+      "Updated CSV file path resolution in chat-ordering-cli.ts (ROOT_DIR now resolves to project root)",
+      "Updated package.json scripts: 'chat' and 'workflow' now point to rc/orders/",
+      "Updated documentation: README.md, docs/CODEBASE_INDEX.md with alphabetical ordering",
+      "Updated major_decisions.json reference to new file location"
+    ],
+    "implications": [
+      "All ordering systems now under rc/ directory",
+      "Cleaner root directory with only config and data files",
+      "Scalable structure for future agents (rc/analytics/, rc/support/, etc.)",
+      "Documentation organized alphabetically for easier navigation",
+      "External scripts referencing old paths will need updates"
+    ],
+    "directory_structure": {
+      "before": [
+        "chat-ordering-cli.ts (root)",
+        "chat-ordering-workflow.ts (root)",
+        "rc/persona-agent.ts",
+        "rc/persona-chat-cli.ts"
+      ],
+      "after": [
+        "rc/orders/chat-ordering-cli.ts",
+        "rc/orders/chat-ordering-workflow.ts",
+        "rc/persona-agent.ts",
+        "rc/persona-chat-cli.ts"
+      ]
+    }
   }
 ]

@@ -244,13 +244,14 @@ All agents use:
 
 ```
 aitx_hackathon/
-├── chat-ordering-cli.ts          # Main interactive ordering CLI
-├── chat-ordering-workflow.ts     # Workflow engine & agent definitions
 ├── rc/
-│   ├── persona-chat-cli.ts       # Persona-aware customer service CLI
-│   ├── persona-agent.ts          # Persona logic & prompt building
-│   └── data/
-│       └── aniket_profile.json   # Customer profile example
+│   ├── data/
+│   │   └── aniket_profile.json        # Customer profile example
+│   ├── orders/
+│   │   ├── chat-ordering-cli.ts       # Main interactive ordering CLI
+│   │   └── chat-ordering-workflow.ts  # Workflow engine & agent definitions
+│   ├── persona-agent.ts               # Persona logic & prompt building
+│   └── persona-chat-cli.ts            # Persona-aware customer service CLI
 ├── orders.csv                    # Order history
 ├── order_details.csv             # Detailed order records
 ├── package.json                  # Dependencies & scripts
@@ -308,8 +309,8 @@ Loop until exit
 npm install
 
 # Run with TypeScript execution
-npx tsx chat-ordering-cli.ts
-npx tsx chat-ordering-workflow.ts "your order here"
+npx tsx rc/orders/chat-ordering-cli.ts
+npx tsx rc/orders/chat-ordering-workflow.ts "your order here"
 npx tsx rc/persona-chat-cli.ts --time=evening
 ```
 
@@ -335,7 +336,7 @@ export async function loadCustomerProfile(customerId: string): Promise<AniketPro
 
 ### Customizing Agents
 
-Edit agent configurations in `chat-ordering-workflow.ts`:
+Edit agent configurations in `rc/orders/chat-ordering-workflow.ts`:
 
 ```typescript
 export const ordering = new Agent({

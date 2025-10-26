@@ -29,34 +29,31 @@ aitx_hackathon/
 │   └── Project overview, setup instructions, and high-level architecture.
 │       Entry point for understanding the persona-aware ordering system.
 │
-├── 📄 chat-ordering-cli.ts
-│   └── Interactive CLI for bulk/single order flows with CSV history integration.
-│       Implements multi-turn conversations with confirmation workflow and upsells.
-│
-├── 📄 chat-ordering-workflow.ts
-│   └── Agent workflow definitions for greeting, ordering, and finalizing orders.
-│       Exports parseJSON helper and order classification logic (bulk vs single).
+├── 📁 docs/
+│   │   Comprehensive documentation for integration and codebase navigation.
+│   │
+│   ├── 📄 CODEBASE_INDEX.md (this file)
+│   │   └── ASCII AST of entire codebase with 2-line descriptions per file.
+│   │       Indexable structure for quick navigation and understanding.
+│   │
+│   └── 📄 FASTAPI_INTEGRATION.md
+│       └── Guide for integrating existing TypeScript CLI with FastAPI via subprocess pattern.
+│           Explains architecture, CLI service wrapper, required helper scripts, no-database approach.
 │
 ├── 📁 rc/
 │   │   Core persona-aware customer service system with session management.
-│   │
-│   ├── 📄 README.md
-│   │   └── Documentation for persona-chat CLI with time-aware behavior examples.
-│   │       Explains time contexts, customer profiles, and usage instructions.
-│   │
-│   ├── 📄 persona-agent.ts
-│   │   └── Creates persona-aware agent with dynamic system prompts based on profile and time.
-│   │       Loads customer profile, formats order history, builds concise instruction prompts.
-│   │
-│   ├── 📄 persona-chat-cli.ts
-│   │   └── Main CLI orchestrator integrating session management, logging, orders, and learning.
-│   │       Handles session resume, order confirmation state machine, Stripe checkout, profile updates.
 │   │
 │   ├── 📁 data/
 │   │   │
 │   │   └── 📄 aniket_profile.json
 │   │       └── Comprehensive customer persona with communication style, culinary preferences, behavior patterns.
 │   │           Includes temporal modes, dietary awareness, delivery addresses, and learned preferences.
+│   │
+│   ├── 📁 learning/
+│   │   │
+│   │   └── 📄 profile-updater.ts
+│   │       └── GPT-4.1 powered learning extraction from conversation history with profile updates.
+│   │           Identifies addresses, contacts, preferences; creates backups before applying updates.
 │   │
 │   ├── 📁 logging/
 │   │   │
@@ -70,50 +67,62 @@ aitx_hackathon/
 │   │       └── Multi-session management with persistence (session.json per session directory).
 │   │           Creates, resumes, lists sessions; tracks conversation history, order state, context variables.
 │   │
-│   ├── 📁 utils/
+│   ├── 📁 orders/
+│   │   │   Order flow CLIs for bulk/single ordering workflows.
 │   │   │
-│   │   ├── 📄 data-loader.ts
-│   │   │   └── CSV loader for order history from orders.csv + order_details.csv.
-│   │   │       Joins on order_number, returns sorted OrderHistory[] for agent context.
+│   │   ├── 📄 chat-ordering-cli.ts
+│   │   │   └── Interactive CLI for bulk/single order flows with CSV history integration.
+│   │   │       Implements multi-turn conversations with confirmation workflow and upsells.
 │   │   │
-│   │   ├── 📄 order-state.ts
-│   │   │   └── Order state machine logic with intent/confirmation detection and draft extraction.
-│   │   │       Detects ordering keywords, parses agent responses for items/quantities/totals.
-│   │   │
-│   │   └── 📄 stripe-checkout.ts
-│   │       └── Stripe checkout placeholder with mock session creation and visual display.
-│   │           Generates order IDs, displays ASCII QR code, simulates 1.5s processing delay.
+│   │   └── 📄 chat-ordering-workflow.ts
+│   │       └── Agent workflow definitions for greeting, ordering, and finalizing orders.
+│   │           Exports parseJSON helper and order classification logic (bulk vs single).
 │   │
-│   └── 📁 learning/
-│       │
-│       └── 📄 profile-updater.ts
-│           └── GPT-4.1 powered learning extraction from conversation history with profile updates.
-│               Identifies addresses, contacts, preferences; creates backups before applying updates.
-│
-├── 📁 sessions/
-│   │   Auto-generated session storage (created on first CLI run).
-│   │   Each session has unique directory with session.json and logs.jsonl.
+│   ├── 📄 persona-agent.ts
+│   │   └── Creates persona-aware agent with dynamic system prompts based on profile and time.
+│   │       Loads customer profile, formats order history, builds concise instruction prompts.
 │   │
-│   └── 📁 sess_{timestamp}_{random}/
+│   ├── 📄 persona-chat-cli.ts
+│   │   └── Main CLI orchestrator integrating session management, logging, orders, and learning.
+│   │       Handles session resume, order confirmation state machine, Stripe checkout, profile updates.
+│   │
+│   ├── 📄 README.md
+│   │   └── Documentation for persona-chat CLI with time-aware behavior examples.
+│   │       Explains time contexts, customer profiles, and usage instructions.
+│   │
+│   ├── 📁 session/
+│   │   │
+│   │   └── 📄 session-manager.ts
+│   │       └── Multi-session management with persistence (session.json per session directory).
+│   │           Creates, resumes, lists sessions; tracks conversation history, order state, context variables.
+│   │
+│   └── 📁 utils/
 │       │
-│       ├── 📄 session.json
-│       │   └── Session state: metadata (turns, orders placed), conversation history, order state.
-│       │       Persistent storage enabling session resume across CLI invocations.
+│       ├── 📄 data-loader.ts
+│       │   └── CSV loader for order history from orders.csv + order_details.csv.
+│       │       Joins on order_number, returns sorted OrderHistory[] for agent context.
 │       │
-│       └── 📄 logs.jsonl
-│           └── JSON Lines log file with timestamped entries for all operations.
-│               FastAPI can tail this for real-time monitoring and analytics.
+│       ├── 📄 order-state.ts
+│       │   └── Order state machine logic with intent/confirmation detection and draft extraction.
+│       │       Detects ordering keywords, parses agent responses for items/quantities/totals.
+│       │
+│       └── 📄 stripe-checkout.ts
+│           └── Stripe checkout placeholder with mock session creation and visual display.
+│               Generates order IDs, displays ASCII QR code, simulates 1.5s processing delay.
 │
-└── 📁 docs/
-    │   Comprehensive documentation for integration and codebase navigation.
+└── 📁 sessions/
+    │   Auto-generated session storage (created on first CLI run).
+    │   Each session has unique directory with session.json and logs.jsonl.
     │
-    ├── 📄 FASTAPI_INTEGRATION.md
-    │   └── Guide for integrating existing TypeScript CLI with FastAPI via subprocess pattern.
-    │       Explains architecture, CLI service wrapper, required helper scripts, no-database approach.
-    │
-    └── 📄 CODEBASE_INDEX.md (this file)
-        └── ASCII AST of entire codebase with 2-line descriptions per file.
-            Indexable structure for quick navigation and understanding.
+    └── 📁 sess_{timestamp}_{random}/
+        │
+        ├── 📄 logs.jsonl
+        │   └── JSON Lines log file with timestamped entries for all operations.
+        │       FastAPI can tail this for real-time monitoring and analytics.
+        │
+        └── 📄 session.json
+            └── Session state: metadata (turns, orders placed), conversation history, order state.
+                Persistent storage enabling session resume across CLI invocations.
 ```
 
 ## Key Systems Map
@@ -156,19 +165,20 @@ persona-chat-cli.ts (triggers on exit)
           └── aniket_profile.backup_*.json (backups)
 ```
 
-## File Statistics
+## File Statistics (Alphabetical)
 
 | Directory | Files | Purpose |
 |-----------|-------|---------|
 | `/` (root) | 6 | Entry points, data, config |
-| `rc/` | 2 | Core CLI & agent |
+| `docs/` | 2 | Documentation |
+| `rc/` | 4 | Core CLI & agent |
 | `rc/data/` | 1 | Customer profiles |
+| `rc/learning/` | 1 | Profile learning |
 | `rc/logging/` | 1 | System logger |
+| `rc/orders/` | 2 | Order flow CLIs |
 | `rc/session/` | 1 | Session manager |
 | `rc/utils/` | 3 | Data, orders, checkout |
-| `rc/learning/` | 1 | Profile learning |
 | `sessions/` | N | Auto-generated |
-| `docs/` | 2 | Documentation |
 
 ## Quick Navigation
 

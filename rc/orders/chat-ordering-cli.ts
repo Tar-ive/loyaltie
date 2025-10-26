@@ -13,7 +13,8 @@ import {
   OrderItem,
 } from "./chat-ordering-workflow";
 
-const ROOT_DIR = __dirname;
+// CSV files are at project root, two levels up from rc/orders/
+const ROOT_DIR = path.resolve(__dirname, "../..");
 
 const BULK_UPSELL: OrderItem = {
   name: "Masala chai growler (serves 12)",
