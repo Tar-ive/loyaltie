@@ -11,7 +11,10 @@ load_dotenv()
 app = FastAPI(
     title="Clay Pit AI API",
     description="Persona-aware customer service API for Clay Pit restaurant",
-    version="1.0.0"
+    version="1.0.0",
+    openapi_url="/openapi.json",
+    docs_url="/docs",
+    redoc_url="/redoc"
 )
 
 # Configure CORS

@@ -4,3 +4,5 @@
 *.log
 supabase/.temp/
 supabase/.branches/
+backend/venv/
+backend/.venv/
