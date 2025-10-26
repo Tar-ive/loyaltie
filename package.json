@@ -27,6 +27,7 @@
   "homepage": "https://github.com/Tar-ive/aitx_hackathon#readme",
   "dependencies": {
     "@openai/agents": "^0.2.1",
+    "dotenv": "^17.2.3",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3"
   },

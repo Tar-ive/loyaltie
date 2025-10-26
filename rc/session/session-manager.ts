@@ -198,4 +198,54 @@ export class SessionManager {
       await this.saveSession(this.currentSession);
     }
   }
+
+  async getSession(sessionId: string): Promise<Session> {
+    const sessionPath = path.resolve(
+      this.sessionsDir,
+      sessionId,
+      "session.json"
+    );
+
+    try {
+      const data = await fs.readFile(sessionPath, "utf8");
+      const session: Session = JSON.parse(data);
+      this.currentSession = session;
+      return session;
+    } catch (error) {
+      throw new Error(`Failed to get session ${sessionId}: ${error}`);
+    }
+  }
+
+  async updateSession(
+    sessionId: string,
+    updates: Partial<SessionState>
+  ): Promise<void> {
+    const session = await this.getSession(sessionId);
+    
+    if (updates.conversationHistory) {
+      session.state.conversationHistory = updates.conversationHistory;
+    }
+    if (updates.orderState) {
+      session.state.orderState = updates.orderState;
+    }
+    if (updates.contextVariables) {
+      session.state.contextVariables = {
+        ...session.state.contextVariables,
+        ...updates.contextVariables,
+      };
+    }
+    if (updates.profileUpdates) {
+      session.state.profileUpdates = {
+        ...session.state.profileUpdates,
+        ...(updates.profileUpdates as Record<string, any>),
+      } as Partial<AniketProfile>;
+    }
+
+    session.metadata.lastAccessedAt = new Date().toISOString();
+    session.metadata.conversationTurns = session.state.conversationHistory.filter(
+      (h) => "role" in h && h.role === "user"
+    ).length;
+
+    await this.saveSession(session);
+  }
 }

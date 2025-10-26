@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { Agent, AgentInputItem, Runner, withTrace } from "@openai/agents";
 
 /** ---------- Types ---------- */

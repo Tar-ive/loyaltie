@@ -1,0 +1,20 @@
+{
+  "metadata": {
+    "sessionId": "sess_1761446015649_qxznm6y0i",
+    "customerId": "test123",
+    "customerName": "Test User",
+    "createdAt": "2025-10-26T02:33:35.649Z",
+    "lastAccessedAt": "2025-10-26T02:33:35.654Z",
+    "status": "active",
+    "conversationTurns": 0,
+    "ordersPlaced": 0
+  },
+  "state": {
+    "conversationHistory": [],
+    "orderState": {
+      "phase": "chatting"
+    },
+    "contextVariables": {},
+    "profileUpdates": {}
+  }
+}

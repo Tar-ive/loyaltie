@@ -4,13 +4,182 @@
     "customerId": "aniket-sharma-nvidia",
     "customerName": "Aniket Sharma",
     "createdAt": "2025-10-26T00:59:50.010Z",
-    "lastAccessedAt": "2025-10-26T00:59:50.011Z",
-    "status": "active",
-    "conversationTurns": 0,
-    "ordersPlaced": 0
+    "lastAccessedAt": "2025-10-26T02:13:09.960Z",
+    "status": "completed",
+    "conversationTurns": 7,
+    "ordersPlaced": 1
   },
   "state": {
-    "conversationHistory": [],
+    "conversationHistory": [
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "input_text",
+            "text": "i wil ahve to usuals"
+          }
+        ]
+      },
+      {
+        "id": "msg_03f45558aa4fbc370068fd83c00bac8195b7f1bf89b7605237",
+        "type": "message",
+        "role": "assistant",
+        "content": [
+          {
+            "type": "output_text",
+            "text": "Noted. Confirming \"the usuals\" (based on last major order):\n\n• Chicken Biryani  \n• Butter Chicken  \n• Kothmir Salmon  \n• Garlic & Basil Naan  \n• Plain Naan  \n• Coconut Curry (veg)  \n• Cucumber Salad  \n• Vegan Chocolate Cake  \n• Gulab Jamun  \n• Mango Margarita (mocktail/regular split)\n\nPlease confirm:\n- Headcount?\n- Any special dietary flags or location changes? \n\nOnce confirmed, I’ll send a summary with pricing and bulk discount.",
+            "annotations": [],
+            "logprobs": []
+          }
+        ],
+        "status": "completed",
+        "providerData": {}
+      },
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "input_text",
+            "text": "the one that i order last week"
+          }
+        ]
+      },
+      {
+        "id": "msg_03f45558aa4fbc370068fd83cfc8788195b4a4c180b638409a",
+        "type": "message",
+        "role": "assistant",
+        "content": [
+          {
+            "type": "output_text",
+            "text": "Copying last week’s order:\n\n• 30× Chicken Biryani  \n• 30× Butter Chicken  \n• 20× Kothmir Salmon  \n• 30× Garlic & Basil Naan  \n• 10× Plain Naan  \n• 20× Coconut Curry  \n• 20× Cucumber Salad  \n• 15× Vegan Chocolate Cake  \n• 15× Gulab Jamun  \n• 20× Mango Margarita (mix of mocktail/regular)\n\n~$1998 with 12% bulk discount.\n\nConfirm headcount, delivery location, and any allergy or dietary updates? Ready to lock in once you confirm.",
+            "annotations": [],
+            "logprobs": []
+          }
+        ],
+        "status": "completed",
+        "providerData": {}
+      },
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "input_text",
+            "text": "only put the chicken biryani"
+          }
+        ]
+      },
+      {
+        "id": "msg_03f45558aa4fbc370068fd83ec3fc4819596f6939f657de722",
+        "type": "message",
+        "role": "assistant",
+        "content": [
+          {
+            "type": "output_text",
+            "text": "Understood.\n\n• 30× Chicken Biryani  \n~$480 with 10% bulk discount.\n\nConfirm headcount, delivery location, and spice level (mild/regular)? Ready to finalize.",
+            "annotations": [],
+            "logprobs": []
+          }
+        ],
+        "status": "completed",
+        "providerData": {}
+      },
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "input_text",
+            "text": "no i only wnat 1"
+          }
+        ]
+      },
+      {
+        "id": "msg_03f45558aa4fbc370068fd83fce1d48195ad1b6dc3bfd6032c",
+        "type": "message",
+        "role": "assistant",
+        "content": [
+          {
+            "type": "output_text",
+            "text": "Got it.\n\n• 1× Chicken Biryani  \n$16 (no bulk discount)\n\nNeed delivery address and preferred time. Confirm?",
+            "annotations": [],
+            "logprobs": []
+          }
+        ],
+        "status": "completed",
+        "providerData": {}
+      },
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "input_text",
+            "text": "at the same address"
+          }
+        ]
+      },
+      {
+        "id": "msg_03f45558aa4fbc370068fd840bff308195b3d782a5f6ae9ab0",
+        "type": "message",
+        "role": "assistant",
+        "content": [
+          {
+            "type": "output_text",
+            "text": "Confirmed.\n\n• 1× Chicken Biryani  \n• Delivery: Usual NVIDIA Austin, downtown address  \n• $16  \n\nReady to send for ASAP delivery. ETA 40–60 min. Any dietary notes or specific spice level?",
+            "annotations": [],
+            "logprobs": []
+          }
+        ],
+        "status": "completed",
+        "providerData": {}
+      },
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "input_text",
+            "text": "Order confirmed. Order ID: ORD-CLY-20251026-649"
+          }
+        ]
+      },
+      {
+        "id": "msg_03f45558aa4fbc370068fd841a75c08195835c579c0449d3d7",
+        "type": "message",
+        "role": "assistant",
+        "content": [
+          {
+            "type": "output_text",
+            "text": "Order confirmed.\n\n• 1× Chicken Biryani  \n• Delivery: NVIDIA Austin, downtown  \n• $16 | Order ID: ORD-CLY-20251026-649  \n• ETA: 40–60 min\n\nWill send SMS/email update if needed. Ping here for any changes.",
+            "annotations": [],
+            "logprobs": []
+          }
+        ],
+        "status": "completed",
+        "providerData": {}
+      },
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "input_text",
+            "text": "no"
+          }
+        ]
+      },
+      {
+        "id": "msg_03f45558aa4fbc370068fd8457ff8081959d287c3bcbf1d872",
+        "type": "message",
+        "role": "assistant",
+        "content": [
+          {
+            "type": "output_text",
+            "text": "Acknowledged—no further action. Order locked in. Will monitor for updates.",
+            "annotations": [],
+            "logprobs": []
+          }
+        ],
+        "status": "completed",
+        "providerData": {}
+      }
+    ],
     "orderState": {
       "phase": "chatting"
     },
