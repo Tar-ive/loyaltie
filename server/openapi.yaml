@@ -1,0 +1,465 @@
+openapi: 3.0.3
+info:
+  title: Clay Pit AI API
+  description: |
+    Persona-aware customer service API for Clay Pit restaurant.
+
+    This API provides endpoints for managing customer sessions and AI-powered conversations
+    for restaurant ordering and customer service.
+
+    ## Features
+    - Session management for customers
+    - AI-powered conversation handling
+    - Order state tracking
+    - Conversation history
+
+    ## Architecture
+    Built with Node.js/Express and TypeScript, using OpenAI Agents SDK for AI capabilities.
+  version: 1.0.0
+  contact:
+    name: Clay Pit AI Team
+  license:
+    name: ISC
+
+servers:
+  - url: http://localhost:8000
+    description: Local development server
+  - url: http://localhost:8000/api/v1
+    description: API v1 base path
+
+tags:
+  - name: Health
+    description: Health check endpoints
+  - name: Sessions
+    description: Customer session management
+  - name: Messages
+    description: Message and conversation handling
+
+paths:
+  /:
+    get:
+      tags:
+        - Health
+      summary: Root endpoint
+      description: Get API status and version information
+      responses:
+        '200':
+          description: API is running
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  message:
+                    type: string
+                    example: Clay Pit AI API is running
+                  version:
+                    type: string
+                    example: 1.0.0
+
+  /health:
+    get:
+      tags:
+        - Health
+      summary: Health check
+      description: Check if the API is healthy and responsive
+      responses:
+        '200':
+          description: API is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: healthy
+
+  /api/v1/sessions/:
+    post:
+      tags:
+        - Sessions
+      summary: Create a new session
+      description: Create a new conversation session for a customer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SessionCreate'
+      responses:
+        '200':
+          description: Session created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+        '400':
+          description: Bad request - missing required fields
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/v1/sessions/customer/{customerId}:
+    get:
+      tags:
+        - Sessions
+      summary: List customer sessions
+      description: Get all active sessions for a specific customer
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          description: Customer ID
+          schema:
+            type: string
+            example: cust_12345
+      responses:
+        '200':
+          description: List of sessions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sessions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SessionMetadata'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/v1/sessions/{sessionId}:
+    get:
+      tags:
+        - Sessions
+      summary: Get session details
+      description: Retrieve detailed information about a specific session
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          description: Session ID
+          schema:
+            type: string
+            example: sess_1761457241929_x93q965ey
+      responses:
+        '200':
+          description: Session details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+        '404':
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - Sessions
+      summary: Delete a session
+      description: Delete/close a session
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          description: Session ID
+          schema:
+            type: string
+            example: sess_1761457241929_x93q965ey
+      responses:
+        '200':
+          description: Session deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: deleted
+                  session_id:
+                    type: string
+                    example: sess_1761457241929_x93q965ey
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/v1/messages/session/{sessionId}:
+    post:
+      tags:
+        - Messages
+      summary: Send a message
+      description: Send a message to the AI agent and receive a response
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          description: Session ID
+          schema:
+            type: string
+            example: sess_1761457241929_x93q965ey
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessageRequest'
+      responses:
+        '200':
+          description: Message processed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '400':
+          description: Bad request - message is required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/v1/messages/session/{sessionId}/conversation:
+    get:
+      tags:
+        - Messages
+      summary: Get conversation history
+      description: Retrieve the full conversation history for a session
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          description: Session ID
+          schema:
+            type: string
+            example: sess_1761457241929_x93q965ey
+      responses:
+        '200':
+          description: Conversation history
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conversation'
+        '404':
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/v1/messages/session/{sessionId}/logs:
+    get:
+      tags:
+        - Messages
+      summary: Get session logs
+      description: Retrieve system logs for a session
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          description: Session ID
+          schema:
+            type: string
+            example: sess_1761457241929_x93q965ey
+      responses:
+        '200':
+          description: Session logs
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  logs:
+                    type: array
+                    items:
+                      type: object
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    SessionCreate:
+      type: object
+      required:
+        - customer_id
+        - customer_name
+      properties:
+        customer_id:
+          type: string
+          description: Unique identifier for the customer
+          example: cust_12345
+        customer_name:
+          type: string
+          description: Customer's name
+          example: John Doe
+
+    SessionMetadata:
+      type: object
+      properties:
+        sessionId:
+          type: string
+          description: Unique session identifier
+          example: sess_1761457241929_x93q965ey
+        customerId:
+          type: string
+          description: Customer identifier
+          example: cust_12345
+        customerName:
+          type: string
+          description: Customer name
+          example: John Doe
+        createdAt:
+          type: string
+          format: date-time
+          description: Session creation timestamp
+          example: "2025-10-26T05:40:41.930Z"
+        lastAccessedAt:
+          type: string
+          format: date-time
+          description: Last access timestamp
+          example: "2025-10-26T05:41:22.315Z"
+        status:
+          type: string
+          enum: [active, completed, abandoned]
+          description: Session status
+          example: active
+        conversationTurns:
+          type: integer
+          description: Number of conversation turns
+          example: 1
+        ordersPlaced:
+          type: integer
+          description: Number of orders placed
+          example: 0
+
+    Session:
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/SessionMetadata'
+        state:
+          type: object
+          properties:
+            conversationHistory:
+              type: array
+              description: Full conversation history
+              items:
+                type: object
+            orderState:
+              type: object
+              description: Current order state
+              properties:
+                phase:
+                  type: string
+                  enum: [chatting, confirming, processing, completed]
+                  example: chatting
+            contextVariables:
+              type: object
+              description: Session context variables
+            profileUpdates:
+              type: object
+              description: Customer profile updates
+
+    MessageRequest:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: User message text
+          example: Hi, can I see your menu?
+
+    MessageResponse:
+      type: object
+      properties:
+        session_id:
+          type: string
+          description: Session identifier
+          example: sess_1761457241929_x93q965ey
+        response:
+          type: string
+          description: AI agent response
+          example: Hi Aniket. How can I help you tonight? Urgent order, menu planning, or something else?
+        order_state:
+          type: object
+          description: Updated order state
+          properties:
+            phase:
+              type: string
+              example: chatting
+
+    Conversation:
+      type: object
+      properties:
+        session_id:
+          type: string
+          description: Session identifier
+          example: sess_1761457241929_x93q965ey
+        conversation:
+          type: array
+          description: Conversation history
+          items:
+            type: object
+            properties:
+              role:
+                type: string
+                enum: [user, assistant]
+                example: user
+              content:
+                type: array
+                items:
+                  type: object
+        order_state:
+          type: object
+          description: Current order state
+
+    Error:
+      type: object
+      properties:
+        detail:
+          type: string
+          description: Error message
+          example: Session not found

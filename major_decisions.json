@@ -9,5 +9,317 @@
       "Data contracts and governance must accommodate Snowflake schemas and role hierarchy",
       "Future analytics enhancements should evaluate Snowflake-native capabilities first"
     ]
+  },
+  {
+    "timestamp": "2025-10-25T16:52:00Z",
+    "category": "rejected_design",
+    "decision": "Rejected: Multi-clone hypothesis testing CLI",
+    "context": "Initial proposal was to build a hypothesis testing system that simulates owner questions across 10-15 different customer personas (clones) to evaluate business decisions like menu changes, pricing, or service offerings.",
+    "rejection_reason": "User clarified they only have one detailed customer persona (Aniket Sharma from NVIDIA), not multiple customer clones. The multi-persona simulation approach was misaligned with the actual use case.",
+    "what_was_proposed": [
+      "Owner asks question → LLM extracts hypotheses → Simulate across 10-15 customer personas",
+      "Each persona represented different demographics, preferences, price sensitivity",
+      "Concurrent simulations to gather diverse feedback",
+      "Aggregate sentiment analysis across persona types",
+      "Generate insights based on persona-specific responses"
+    ],
+    "why_rejected": "Only working with single persona (Aniket), not multiple customer types"
+  },
+  {
+    "timestamp": "2025-10-25T16:52:00Z",
+    "category": "rejected_design",
+    "decision": "Rejected: Single-persona multi-scenario hypothesis testing CLI",
+    "context": "Second proposal adapted to single persona (Aniket) but generated multiple scenario variants to test hypotheses across different contexts (time of day, budget levels, event types, communication channels).",
+    "rejection_reason": "User clarified the actual need was a straightforward customer service chatbot, not a hypothesis testing/simulation system. The scenario-matrix approach was over-engineered for the requirement.",
+    "what_was_proposed": [
+      "Owner asks question → LLM extracts hypotheses → Generate scenario matrix",
+      "Scenario dimensions: time_of_day × budget × event_type × channel",
+      "Simulate Aniket's response in each scenario variant (e.g., 'Monday 9am + $1200 budget + team lunch')",
+      "Sentiment analysis per scenario",
+      "Generate insights about which contexts work best for a given hypothesis",
+      "Complex flow with hypothesis detection, scenario generation, concurrent simulations"
+    ],
+    "why_rejected": "User wanted a normal multi-turn customer service chat, not a hypothesis testing system"
+  },
+  {
+    "timestamp": "2025-10-25T16:52:00Z",
+    "category": "design_choice",
+    "decision": "Accepted: Persona-aware customer service CLI",
+    "context": "Final design is a straightforward multi-turn chatbot where the agent speaks TO Aniket (or user playing as Aniket), using his detailed persona to anticipate preferences and adapt communication style.",
+    "rationale": "Simpler design that matches actual use case: a customer service agent that knows the customer's profile and provides personalized service.",
+    "implementation": [
+      "Single Agent with rich system prompt containing Aniket's full persona",
+      "Time-aware behavior (auto-detects or override with --time flag)",
+      "Multi-turn conversation loop (similar to existing rc/orders/chat-ordering-cli.ts)",
+      "No hypothesis extraction, no scenario generation, no simulations",
+      "Just a smart agent that knows customer preferences and adapts accordingly"
+    ],
+    "key_features": [
+      "Loads aniket_profile.json with detailed persona data",
+      "Adapts tone based on time of day (structured AM, efficient midday, collaborative PM, urgent evening)",
+      "Knows favorite dishes, dietary requirements, budget ranges",
+      "Uses tech analogies, provides Slack-ready bullet summaries",
+      "Remembers NVIDIA milestones and sustainability values"
+    ]
+  },
+  {
+    "timestamp": "2025-10-25T19:00:00Z",
+    "category": "architectural_choice",
+    "decision": "Comprehensive system-wide logging architecture",
+    "context": "Building toward FastAPI backend integration requires full observability of CLI operations, user interactions, and agent behaviors.",
+    "rationale": "FastAPI backend will need to replay sessions, analyze conversations, and trigger workflows based on logged events. JSON Lines format (logs.jsonl) is FastAPI-compatible and enables streaming log analysis.",
+    "implementation": [
+      "SystemLogger class logs every operation to sessions/{sessionId}/logs.jsonl",
+      "Log categories cover entire system: session lifecycle, user I/O, agent calls, data ops, order flow, payments",
+      "Structured JSON format with timestamps, categories, data payloads for easy backend parsing",
+      "Console output formatted for CLI UX, file output optimized for API consumption",
+      "Auto-flush mechanism ensures logs persist even if process crashes"
+    ],
+    "implications": [
+      "All new functionality must integrate with SystemLogger",
+      "FastAPI can tail logs.jsonl for real-time monitoring",
+      "Analytics can aggregate logs across sessions for insights",
+      "Debugging simplified with comprehensive operation traces",
+      "Performance metrics captured automatically with trackOperation()"
+    ]
+  },
+  {
+    "timestamp": "2025-10-25T19:00:00Z",
+    "category": "architectural_choice",
+    "decision": "Session management system with persistence",
+    "context": "Need to support multi-session conversations where users can pause and resume ordering flows across CLI invocations.",
+    "rationale": "Single-run conversations don't reflect real customer behavior. Users may need to check with team, get budget approval, or add items across multiple sessions. Session persistence enables this while maintaining context.",
+    "implementation": [
+      "SessionManager creates unique session IDs (sess_{timestamp}_{random})",
+      "Each session stored in sessions/{sessionId}/ directory with session.json + logs.jsonl",
+      "Session state includes: conversation history, order state, context variables, profile updates",
+      "CLI prompts user to resume active sessions or start new one",
+      "Sessions closed with status: completed, abandoned",
+      "Automatic session listing shows last 3 active sessions with turn counts"
+    ],
+    "implications": [
+      "FastAPI backend can serve session state via REST API",
+      "Users can have multiple concurrent sessions (different projects/events)",
+      "Session history enables better recommendations and context awareness",
+      "Must implement session cleanup/archival strategy for old sessions",
+      "Session resume shows last 6 conversation turns for context"
+    ]
+  },
+  {
+    "timestamp": "2025-10-25T19:00:00Z",
+    "category": "architectural_choice",
+    "decision": "Dynamic persona profile learning system",
+    "context": "aniket_profile.json should grow with each interaction, capturing new delivery addresses, preferences, team information, and behavioral patterns.",
+    "rationale": "Static profiles become stale. Real customer relationships involve learning over time. Each conversation reveals new information that should be permanently captured to improve future interactions.",
+    "implementation": [
+      "ProfileUpdater uses GPT-4.1 to extract new learnings from conversation history",
+      "Extraction looks for: delivery addresses, contacts, event types, preferences, budget patterns",
+      "Updates categorized by confidence (high/medium/low) and action (append/replace/merge)",
+      "User reviews and approves updates before applying to aniket_profile.json",
+      "Profile backups created before each update with timestamp",
+      "Learning extraction runs automatically on session exit"
+    ],
+    "implications": [
+      "aniket_profile.json becomes a living document, not static config",
+      "Profile updates must be reviewed to prevent AI hallucinations",
+      "Backend can trigger learning extraction after each session",
+      "Need governance around profile schema evolution",
+      "Backup files accumulate over time - need cleanup policy"
+    ],
+    "future_enhancements": [
+      "Multi-customer profile management",
+      "Profile versioning and diff tracking",
+      "Automated confidence scoring improvements",
+      "Profile merge conflict resolution",
+      "Scheduled profile review UI for admins"
+    ]
+  },
+  {
+    "timestamp": "2025-10-25T19:00:00Z",
+    "category": "design_choice",
+    "decision": "Reduced agent verbosity via instruction engineering",
+    "context": "Initial agent responses were too verbose and contained unnecessary explanations. Customer (Aniket) values efficiency and conciseness.",
+    "rationale": "Over-explanation wastes time and doesn't match customer communication style. Bullet points and direct answers align better with 'polite but decisive' and 'medium-high context but wants concise recaps' profile traits.",
+    "implementation": [
+      "Updated system prompt with COMMUNICATION RULES section emphasizing conciseness",
+      "1-3 sentence responses unless details requested",
+      "Bullet points for options, not prose",
+      "Skip pleasantries after greeting",
+      "Bad/good example pairs in prompt to guide behavior",
+      "Reduced temperature from 0.8 to 0.7 for more focused responses",
+      "Explicit instruction: Target Verbosity LOW despite profile saying medium-high"
+    ],
+    "implications": [
+      "Faster interactions, less token usage",
+      "Better alignment with customer persona",
+      "May need A/B testing to find optimal verbosity level",
+      "Different personas may need different verbosity settings",
+      "Example-driven prompting significantly improves response quality"
+    ]
+  },
+  {
+    "timestamp": "2025-10-25T19:00:00Z",
+    "category": "design_choice",
+    "decision": "Order state machine with CLI-level confirmation flow",
+    "context": "Need structured order flow: detect intent → draft → confirm → checkout → complete",
+    "rationale": "Agent can't reliably handle multi-turn confirmation workflows. CLI-level state machine ensures proper flow control and logging.",
+    "implementation": [
+      "OrderState enum: chatting | confirming | processing | completed",
+      "detectOrderIntent() scans user input for ordering keywords",
+      "extractOrderDraft() parses agent response for items, quantities, totals",
+      "detectConfirmationIntent() recognizes yes/no patterns",
+      "State persisted in session for resume capability",
+      "Stripe checkout triggered only after explicit confirmation"
+    ],
+    "implications": [
+      "Clear separation: agent suggests, CLI controls workflow",
+      "State transitions fully logged for debugging",
+      "Easy to add validation steps (inventory check, pricing, etc.)",
+      "FastAPI can implement same state machine server-side",
+      "Prevents accidental order placement from ambiguous agent responses"
+    ]
+  },
+  {
+    "timestamp": "2025-10-25T19:00:00Z",
+    "category": "design_choice",
+    "decision": "Scaffold for FastAPI backend integration",
+    "context": "CLI is prototype; production system will have FastAPI backend serving web/mobile clients.",
+    "rationale": "CLI architecture should anticipate backend needs to minimize refactoring. Structured logging, session management, and profile learning are backend-ready patterns.",
+    "scaffolding_decisions": [
+      "JSON Lines logging format (FastAPI can stream/parse easily)",
+      "Session state stored as JSON files (can move to database later)",
+      "Clear separation: data layer (CSV, profiles), business logic (agents, orders), presentation (CLI)",
+      "All async operations to match FastAPI async patterns",
+      "Utilities designed as importable modules, not CLI-specific code"
+    ],
+    "future_backend_endpoints": [
+      "POST /sessions → create new session",
+      "GET /sessions/{id} → retrieve session state",
+      "POST /sessions/{id}/messages → send user message, get agent response",
+      "GET /sessions/{id}/logs → stream logs",
+      "POST /orders/{id}/confirm → trigger checkout",
+      "PATCH /profiles/{id} → apply profile updates",
+      "GET /sessions → list active sessions for customer",
+      "POST /sessions/{id}/learnings → extract and apply profile updates"
+    ],
+    "migration_path": [
+      "1. Extract business logic into shared library (rc/core/)",
+      "2. Wrap SessionManager/SystemLogger in FastAPI service layer",
+      "3. Replace file-based storage with PostgreSQL/MongoDB",
+      "4. Add authentication/authorization (OAuth2 + JWT)",
+      "5. Build REST API endpoints matching scaffolded patterns",
+      "6. CLI becomes thin client calling API instead of direct logic",
+      "7. Add WebSocket support for real-time agent streaming",
+      "8. Build web/mobile UIs consuming same API"
+    ]
+  },
+  {
+    "timestamp": "2025-10-25T19:00:00Z",
+    "category": "data_model",
+    "decision": "CSV-based order history with dynamic loading",
+    "context": "Order history currently hardcoded in CLI; need to load from orders.csv and order_details.csv at project root.",
+    "rationale": "Centralized data source enables consistency across tools. CSV format is simple, human-readable, and easy to update.",
+    "implementation": [
+      "loadOrderHistory() reads orders.csv and order_details.csv",
+      "Joins on order_number field to combine customer + order data",
+      "Returns OrderHistory[] sorted by order number descending",
+      "Injected into agent system prompt for context-aware suggestions",
+      "Custom CSV parser handles quoted fields and special characters"
+    ],
+    "implications": [
+      "Agent can reference past orders naturally in conversation",
+      "Bulk discount suggestions based on historical patterns",
+      "Easy to add new historical data without code changes",
+      "Future: migrate to database but keep same data structure",
+      "Order history loaded once per session for performance"
+    ]
+  },
+  {
+    "timestamp": "2025-10-25T19:00:00Z",
+    "category": "ux_design",
+    "decision": "Stripe checkout placeholder with visual feedback",
+    "context": "Need payment integration mockup for demo/testing before real Stripe implementation.",
+    "rationale": "Placeholder allows testing full order flow without payment processor setup. Visual elements (QR code, checkout URL) make demo more realistic.",
+    "implementation": [
+      "createCheckoutSession() generates mock session with realistic structure",
+      "Simulates 1.5s processing delay for realism",
+      "Displays formatted checkout UI with order ID, amount, session ID, timestamp",
+      "ASCII art QR code placeholder",
+      "Checkout URL follows Stripe pattern: https://checkout.stripe.com/pay/{sessionId}",
+      "All checkout events logged for backend integration planning"
+    ],
+    "future_production_implementation": [
+      "Replace mock with real Stripe API calls",
+      "Use Stripe Checkout Sessions API",
+      "Add webhook handlers for payment confirmation",
+      "Implement idempotency keys for retry safety",
+      "Add payment status polling/webhooks",
+      "Store payment records in database"
+    ]
+  },
+  {
+    "timestamp": "2025-10-25T20:00:00Z",
+    "category": "known_limitation",
+    "decision": "Order editing not supported in current implementation",
+    "context": "Users cannot modify an order draft after it's been created. If they want to change items, quantities, or details, they must cancel and start over.",
+    "why_this_limitation": [
+      "Order state machine only supports forward flow: chatting → confirming → processing → completed",
+      "No 'editing' or 'modifying' state exists",
+      "Agent responses would need to be parsed and merged with existing draft (complex)",
+      "Session state doesn't track 'previous draft' for comparison"
+    ],
+    "current_workaround": [
+      "User must decline the order when prompted 'yes/no to confirm'",
+      "Agent returns to chatting state",
+      "User can make a new request with corrections",
+      "Session preserves conversation history for context"
+    ],
+    "future_implementation": [
+      "Add 'editing' phase to OrderState enum",
+      "Implement draft merge logic in order-state.ts",
+      "Add commands: 'edit order', 'remove item X', 'change quantity of Y to Z'",
+      "Create OrderDraftEditor class to handle modifications",
+      "Track draft versions for undo/redo capability",
+      "Add validation before each state transition"
+    ],
+    "impact": "Medium - Users can work around by declining and restarting, but UX is not ideal for complex orders with many items",
+    "priority": "High for production - essential for good UX"
+  },
+  {
+    "timestamp": "2025-10-26T00:00:00Z",
+    "category": "code_organization",
+    "decision": "Moved ordering CLIs to rc/orders subdirectory",
+    "context": "Project had ordering-related files (chat-ordering-cli.ts, chat-ordering-workflow.ts) at root level, while persona-aware system lived in rc/. Consolidating all agent-related code under rc/ improves organization.",
+    "rationale": "Better separation of concerns and scalability. Creates logical grouping where rc/orders/ contains order flow systems, while rc/ root contains persona-aware agents. Sets foundation for adding more agent types in future.",
+    "changes_made": [
+      "Created rc/orders/ subdirectory",
+      "Moved chat-ordering-cli.ts from root to rc/orders/",
+      "Moved chat-ordering-workflow.ts from root to rc/orders/",
+      "Updated CSV file path resolution in chat-ordering-cli.ts (ROOT_DIR now resolves to project root)",
+      "Updated package.json scripts: 'chat' and 'workflow' now point to rc/orders/",
+      "Updated documentation: README.md, docs/CODEBASE_INDEX.md with alphabetical ordering",
+      "Updated major_decisions.json reference to new file location"
+    ],
+    "implications": [
+      "All ordering systems now under rc/ directory",
+      "Cleaner root directory with only config and data files",
+      "Scalable structure for future agents (rc/analytics/, rc/support/, etc.)",
+      "Documentation organized alphabetically for easier navigation",
+      "External scripts referencing old paths will need updates"
+    ],
+    "directory_structure": {
+      "before": [
+        "chat-ordering-cli.ts (root)",
+        "chat-ordering-workflow.ts (root)",
+        "rc/persona-agent.ts",
+        "rc/persona-chat-cli.ts"
+      ],
+      "after": [
+        "rc/orders/chat-ordering-cli.ts",
+        "rc/orders/chat-ordering-workflow.ts",
+        "rc/persona-agent.ts",
+        "rc/persona-chat-cli.ts"
+      ]
+    }
   }
 ]

@@ -1,0 +1,50 @@
+{
+  "name": "loyaltie",
+  "version": "1.0.0",
+  "description": "Hi",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "chat": "tsx rc/orders/chat-ordering-cli.ts",
+    "workflow": "tsx rc/orders/chat-ordering-workflow.ts",
+    "persona": "tsx rc/persona-chat-cli.ts",
+    "server": "tsx server/index.ts",
+    "dev": "tsx watch server/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tar-ive/aitx_hackathon.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Tar-ive/aitx_hackathon/issues"
+  },
+  "homepage": "https://github.com/Tar-ive/aitx_hackathon#readme",
+  "dependencies": {
+    "@ai-sdk/openai": "^2.0.53",
+    "@openai/agents": "^0.2.1",
+    "@openai/agents-extensions": "^0.2.1",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
+    "@types/yamljs": "^0.2.34",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "stripe": "^19.1.0",
+    "swagger-ui-express": "^5.0.1",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.9.1"
+  }
+}
