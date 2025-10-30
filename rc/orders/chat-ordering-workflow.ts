@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { Agent, AgentInputItem, Runner, withTrace } from "@openai/agents";
-import { getReasoningModel } from "../config/model-config";
+import { getReasoningModel, getModelSettings } from "../config/model-config";
 
 /** ---------- Types ---------- */
 export type WorkflowInput = { input_as_text: string };
@@ -45,7 +45,7 @@ export const greeting = new Agent({
     "If the user already stated what they want, do not ask extra questions. Keep it brief.",
   ].join("\n"),
   model: getReasoningModel(),
-  modelSettings: { reasoning: { effort: "low" }, store: true },
+  modelSettings: getModelSettings(),
 });
 
 export const ordering = new Agent({
@@ -64,7 +64,7 @@ export const ordering = new Agent({
     "}",
   ].join("\n"),
   model: getReasoningModel(),
-  modelSettings: { reasoning: { effort: "low" }, store: true },
+  modelSettings: getModelSettings(),
 });
 
 export const finalizer = new Agent({
@@ -80,7 +80,7 @@ export const finalizer = new Agent({
     "Keep it to 5-7 lines max.",
   ].join("\n"),
   model: getReasoningModel(),
-  modelSettings: { reasoning: { effort: "low" }, store: true },
+  modelSettings: getModelSettings(),
 });
 
 /** ---------- Approval helpers ---------- */

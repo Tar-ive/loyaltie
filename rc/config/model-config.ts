@@ -41,3 +41,8 @@ export function getReasoningModel(): AiSdkModel | string {
   console.log('🤖 Using OpenAI GPT-5');
   return ModelConfig.gpt5;
 }
+
+// Get model settings - no reasoning tokens
+export function getModelSettings() {
+  return { store: true };
+}
