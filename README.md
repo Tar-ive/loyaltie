@@ -23,10 +23,8 @@ npm run persona
 
 ## Project Structure
 
-- `/src` - Source code files
-- `/docs` - Documentation
-- `/scripts` - Utility scripts
-- `/supabase` - Database configuration and seeds
+- `/rc` - Resource files and persona agent code
+- `/rc/data` - User profile data
 
 ## Features
 
@@ -42,4 +40,3 @@ This project uses TypeScript and follows clean code principles for maintainable,
 ## License
 
 MIT
-Hi 

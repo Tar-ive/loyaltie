@@ -1,6 +1,0 @@
-customer_id,customer_name,age,occupation,location,order_number,order_value,order_context
-ANIKET-SHARMA-001,Aniket Sharma,29,"Developer Relations, NVIDIA","Austin, TX",1,715.00,"Team lunch catering"
-ANIKET-SHARMA-001,Aniket Sharma,29,"Developer Relations, NVIDIA","Austin, TX",2,842.50,"Product sprint celebration"
-ANIKET-SHARMA-001,Aniket Sharma,29,"Developer Relations, NVIDIA","Austin, TX",3,910.25,"Quarterly town hall spread"
-ANIKET-SHARMA-001,Aniket Sharma,29,"Developer Relations, NVIDIA","Austin, TX",4,1285.75,"Developers hackathon lunch"
-ANIKET-SHARMA-001,Aniket Sharma,29,"Developer Relations, NVIDIA","Austin, TX",5,1998.00,"Year-end onsite feast"

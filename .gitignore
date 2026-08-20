@@ -1,6 +1,0 @@
-.env
-.claude-flow/
-.claude/
-*.log
-supabase/.temp/
-supabase/.branches/
