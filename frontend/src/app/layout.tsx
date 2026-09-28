@@ -6,8 +6,8 @@ import { Toaster } from 'react-hot-toast'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'EchoEats - AI Customer Service',
-  description: 'Intelligent customer service chat interface powered by EchoEats AI',
+  title: 'Loyaltie: Hyper-personalized ordering agents',
+  description: 'Redefining how you order food with hyper-personalized AI agents that remember every regular.',
 }
 
 export default function RootLayout({

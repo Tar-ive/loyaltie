@@ -1,3 +1,17 @@
+# Loyaltie
+
+**Redefining how you order food with hyper-personalized AI agents that remember every regular.**
+Built at the AITX hackathon by Saksham Adhikari, [Sharan Murli](https://github.com/sharanmurli) and [Darshan Rao](https://github.com/darshanrao).
+[Watch the demo](https://x.com/saksham_adh/status/1982489137111560450)
+
+## Website
+
+The landing page lives in `frontend/` at `/`, and the chat app is at `/chat`:
+
+```bash
+cd frontend && npm install && npm run dev   # http://localhost:3000
+```
+
 # Loyaltie CLI Documentation
 
 This repository contains three AI-powered CLI tools for restaurant ordering and customer service, built with OpenAI Agents.
