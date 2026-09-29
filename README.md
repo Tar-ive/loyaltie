@@ -4,7 +4,7 @@
 Built at the AITX hackathon by Saksham Adhikari, [Sharan Murli](https://github.com/sharanmurli) and [Darshan Rao](https://github.com/darshanrao).
 🥇 **Agentic Track** (Weights & Biases) · 🥇 **Loman AI Track** (Voice AI for Restaurants)
 
-[Watch the demo](https://x.com/saksham_adh/status/1982489137111560450)
+**[Website](https://loyaltie.vercel.app)** · [Watch the demo](https://x.com/saksham_adh/status/1982489137111560450)
 
 ## Website
 
