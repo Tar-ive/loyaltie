@@ -5,12 +5,14 @@ interface CardProps {
   children: React.ReactNode;
   className?: string;
   padding?: 'sm' | 'md' | 'lg';
+  onClick?: () => void;
 }
 
 export const Card: React.FC<CardProps> = ({
   children,
   className,
   padding = 'md',
+  onClick,
 }) => {
   const paddingClasses = {
     sm: 'p-4',
@@ -20,6 +22,7 @@ export const Card: React.FC<CardProps> = ({
   
   return (
     <div
+      onClick={onClick}
       className={clsx(
         'bg-white rounded-lg shadow-sm border border-secondary-200',
         paddingClasses[padding],
