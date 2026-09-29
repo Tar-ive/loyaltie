@@ -119,6 +119,11 @@ const awards = [
   { track: "Loman AI Track", sponsor: "Voice AI for Restaurants" },
 ];
 
+const photos = [
+  { src: "/images/aitx/awards-stage.jpg", width: 2048, height: 1382, alt: "The team on stage during the bounties and bonuses announcements at AITX", caption: "On stage for the bounty announcements" },
+  { src: "/images/aitx/team-selfie.jpg", width: 2048, height: 1536, alt: "Group selfie after the AITX hackathon", caption: "Celebrating after the awards" },
+];
+
 const team = [
   {
     name: "Saksham Adhikari",
@@ -386,6 +391,23 @@ export default function LandingPage() {
                     <li key={role}>{role}</li>
                   ))}
                 </ul>
+              </Reveal>
+            ))}
+          </div>
+          <div className="mt-20 grid gap-6 md:grid-cols-2">
+            {photos.map((photo, i) => (
+              <Reveal key={photo.src} delay={i * 120}>
+                <figure>
+                  <Image
+                    src={photo.src}
+                    alt={photo.alt}
+                    width={photo.width}
+                    height={photo.height}
+                    sizes="(min-width: 768px) 480px, 100vw"
+                    className="aspect-[4/3] w-full rounded-2xl border border-amber-400/20 object-cover shadow-2xl shadow-black/40"
+                  />
+                  <figcaption className="mt-3 text-center text-sm text-stone-400">{photo.caption}</figcaption>
+                </figure>
               </Reveal>
             ))}
           </div>
