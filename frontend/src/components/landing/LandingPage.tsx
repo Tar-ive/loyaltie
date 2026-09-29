@@ -120,8 +120,8 @@ const awards = [
 ];
 
 const photos = [
-  { src: "/images/aitx/awards-stage.jpg", width: 2048, height: 1382, alt: "The team on stage during the bounties and bonuses announcements at AITX", caption: "On stage for the bounty announcements" },
-  { src: "/images/aitx/team-selfie.jpg", width: 2048, height: 1536, alt: "Group selfie after the AITX hackathon", caption: "Celebrating after the awards" },
+  { src: "/images/aitx/awards-stage.jpg", width: 2048, height: 1382, alt: "The team on stage during the bounties and bonuses announcements at the Austin AI Community Hackathon", caption: "On stage for the bounty announcements" },
+  { src: "/images/aitx/team-selfie.jpg", width: 2048, height: 1536, alt: "Group selfie after the Austin AI Community Hackathon", caption: "Celebrating after the awards" },
 ];
 
 const team = [
@@ -229,7 +229,7 @@ export default function LandingPage() {
               </video>
             </div>
             <p className="mt-4 text-center text-sm text-stone-500">
-              Presenting Loyaltie at the AITX hackathon with NVIDIA ·{" "}
+              Presenting Loyaltie at the Austin AI Community Hackathon, hosted by AITX + NVIDIA ·{" "}
               <a href={DEMO_TWEET_URL} className="underline decoration-stone-300 underline-offset-4 hover:text-stone-700">
                 Watch on X
               </a>
@@ -359,19 +359,35 @@ export default function LandingPage() {
       {/* Team */}
       <section id="team" className="bg-[#2B1D12] py-28">
         <div className="mx-auto max-w-5xl px-6">
-          <Reveal className="mx-auto mb-20 max-w-2xl text-center">
+          <Reveal className="mx-auto mb-10 max-w-2xl text-center">
             <h2 className="mb-5 text-4xl font-bold tracking-tight text-[#FBF6EC] md:text-6xl">Meet the team.</h2>
             <p className="text-lg leading-relaxed text-stone-300">
-              We built Loyaltie in a weekend at the AITX hackathon in Austin, and it took first place in two tracks.
+              We built Loyaltie in a weekend at the Austin AI Community Hackathon, and it took first place in two tracks.
             </p>
-            <ul className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-              {awards.map((a) => (
-                <li key={a.track} className="rounded-2xl border border-amber-400/30 bg-amber-400/10 px-5 py-3 text-left">
-                  <p className="font-semibold text-amber-300">🥇 {a.track}</p>
-                  <p className="text-sm text-stone-400">{a.sponsor}</p>
-                </li>
-              ))}
-            </ul>
+          </Reveal>
+          <Reveal className="mx-auto mb-20 max-w-3xl">
+            <div className="flex flex-col items-center gap-6 rounded-3xl border border-amber-400/20 bg-black/20 p-6 sm:flex-row sm:items-center">
+              <Image
+                src="/images/aitx/event-poster.jpg"
+                alt="Austin AI Community Hackathon at Austin Tech Week, hosted by AITX and NVIDIA"
+                width={800}
+                height={800}
+                className="h-40 w-40 shrink-0 rounded-2xl object-cover shadow-xl shadow-black/40"
+              />
+              <div className="text-center sm:text-left">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-400">Austin Tech Week · Oct 2025</p>
+                <h3 className="mt-2 text-2xl font-bold text-[#FBF6EC]">Austin AI Community Hackathon</h3>
+                <p className="mt-1 text-sm text-stone-400">Hosted by AITX + NVIDIA</p>
+                <ul className="mt-5 flex flex-col gap-3 sm:flex-row">
+                  {awards.map((a) => (
+                    <li key={a.track} className="rounded-2xl border border-amber-400/30 bg-amber-400/10 px-4 py-2.5 text-left">
+                      <p className="font-semibold text-amber-300">🥇 {a.track}</p>
+                      <p className="text-sm text-stone-400">{a.sponsor}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
           </Reveal>
           <div className="grid grid-cols-1 gap-y-14 sm:grid-cols-3 sm:gap-x-6">
             {team.map((member, i) => (
@@ -437,7 +453,7 @@ export default function LandingPage() {
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 sm:flex-row">
           <span className="text-sm font-bold tracking-[0.3em] text-stone-500">LOYALTIE</span>
           <p className="text-sm text-stone-400">
-            Built at AITX ·{" "}
+            Built at the Austin AI Community Hackathon ·{" "}
             <Link href="/chat" className="underline decoration-stone-300 underline-offset-4 hover:text-stone-600">Chat app</Link> ·{" "}
             <a href={GITHUB_URL} className="underline decoration-stone-300 underline-offset-4 hover:text-stone-600">GitHub</a>
           </p>

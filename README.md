@@ -1,7 +1,7 @@
 # Loyaltie
 
 **Redefining how you order food with hyper-personalized AI agents that remember every regular.**
-Built at the AITX hackathon by Saksham Adhikari, [Sharan Murli](https://github.com/sharanmurli) and [Darshan Rao](https://github.com/darshanrao).
+Built at the Austin AI Community Hackathon (Austin Tech Week, hosted by AITX + NVIDIA) by Saksham Adhikari, [Sharan Murli](https://github.com/sharanmurli) and [Darshan Rao](https://github.com/darshanrao).
 🥇 **Agentic Track** (Weights & Biases) · 🥇 **Loman AI Track** (Voice AI for Restaurants)
 
 **[Website](https://loyaltie.vercel.app)** · [Watch the demo](https://x.com/saksham_adh/status/1982489137111560450)
