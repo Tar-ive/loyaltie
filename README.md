@@ -1,44 +1,185 @@
-# Loyaltie
+<p align="center">
+  <img src="docs/assets/banner.png" alt="Loyaltie: every regular deserves to be remembered" width="100%">
+</p>
 
-**Redefining how you order food with hyper-personalized AI agents that remember every regular.**
-Built at the Austin AI Community Hackathon (Austin Tech Week, hosted by AITX + NVIDIA) by Saksham Adhikari, [Sharan Murli](https://github.com/sharanmurli) and [Darshan Rao](https://github.com/darshanrao).
-🥇 **Agentic Track** (Weights & Biases) · 🥇 **Loman AI Track** (Voice AI for Restaurants)
+<h3 align="center">🥇 1st Place · Agentic Track (Weights &amp; Biases)<br>🥇 1st Place · Loman AI Track (Voice AI for Restaurants)</h3>
+<p align="center"><i>Austin AI Community Hackathon · Austin Tech Week 2025 · hosted by AITX + NVIDIA</i></p>
 
-**[Website](https://loyaltie.vercel.app)** · [Watch the demo](https://x.com/saksham_adh/status/1982489137111560450)
+<p align="center">
+  <a href="https://loyaltie.vercel.app"><b>Website</b></a> ·
+  <a href="https://x.com/saksham_adh/status/1982489137111560450"><b>Demo video</b></a> ·
+  <a href="#getting-started"><b>Getting started</b></a> ·
+  <a href="#team"><b>Team</b></a>
+</p>
 
-## Website
+<p align="center">
+  <img src="https://img.shields.io/badge/🥇_Agentic_Track-Weights_&_Biases-FFBE00?style=flat-square" alt="1st place, Agentic Track (Weights & Biases)">
+  <img src="https://img.shields.io/badge/🥇_Loman_AI_Track-Voice_AI_for_Restaurants-FFBE00?style=flat-square" alt="1st place, Loman AI Track">
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript">
+  <img src="https://img.shields.io/badge/OpenAI-Agents_SDK-412991?style=flat-square&logo=openai&logoColor=white" alt="OpenAI Agents SDK">
+  <img src="https://img.shields.io/badge/NVIDIA-Nemotron-76B900?style=flat-square&logo=nvidia&logoColor=white" alt="NVIDIA Nemotron">
+  <img src="https://img.shields.io/badge/Stripe-Checkout-635BFF?style=flat-square&logo=stripe&logoColor=white" alt="Stripe Checkout">
+  <img src="https://img.shields.io/badge/Next.js-14-000000?style=flat-square&logo=nextdotjs&logoColor=white" alt="Next.js 14">
+  <img src="https://img.shields.io/badge/license-ISC-green?style=flat-square" alt="ISC License">
+</p>
 
-The landing page lives in `frontend/` at `/`, and the chat app is at `/chat`:
+# Loyaltie: Hyper-Personalized Ordering Agents
 
-```bash
-cd frontend && npm install && npm run dev   # http://localhost:3000
+**Every regular deserves to be remembered.**
+
+Loyaltie redefines how you order food. Its AI agents know each customer's tastes, budget and team, adapt their tone to the time of day, take the order through to Stripe checkout, and learn something new from every conversation. The demo agent works for Clay Pit, an Austin restaurant, and serves a regular who orders lunch for their whole team every week.
+
+<p align="center">
+  <a href="https://x.com/saksham_adh/status/1982489137111560450">
+    <img src="frontend/public/video/loyaltie-demo-poster.jpg" alt="Loyaltie demo video" width="80%">
+  </a>
+  <br>
+  <sub><b>▶ Watch the 4-minute demo</b> (also on the <a href="https://loyaltie.vercel.app/#demo">website</a>)</sub>
+</p>
+
+---
+
+## 🏆 Winning at the Austin AI Community Hackathon
+
+Loyaltie took **first place in two tracks** at the Austin AI Community Hackathon during Austin Tech Week (October 2025), hosted by AITX and NVIDIA:
+
+| Track | Sponsor | What Loyaltie brought |
+|---|---|---|
+| 🥇 **Agentic Track** | Weights & Biases | A persona-aware agent that runs the full order flow (discover, curate, confirm, check out) and updates its own customer profile afterwards |
+| 🥇 **Loman AI Track** | Voice AI for Restaurants | A restaurant ordering agent whose replies are written to be spoken: short, conversational and adapted to the customer's moment |
+
+<table>
+  <tr>
+    <td width="33%" valign="top">
+      <img src="frontend/public/images/aitx/event-poster.jpg" alt="Austin AI Community Hackathon poster">
+      <p align="center"><sub><b>The event</b></sub></p>
+    </td>
+    <td width="33%" valign="top">
+      <img src="frontend/public/images/aitx/awards-stage.jpg" alt="The team on stage during the bounty announcements">
+      <p align="center"><sub><b>On stage for the bounty announcements</b></sub></p>
+    </td>
+    <td width="33%" valign="top">
+      <img src="frontend/public/images/aitx/team-selfie.jpg" alt="Celebrating after the awards">
+      <p align="center"><sub><b>Celebrating after the awards</b></sub></p>
+    </td>
+  </tr>
+</table>
+
+---
+
+## The Problem
+
+Restaurants know their regulars by face. Their ordering software doesn't know them at all.
+
+- **Every order starts from zero.** Phone lines, chatbots and ordering apps greet a customer on their 47th order like it's their first: same questions, same full menu.
+- **The same person isn't the same at 9 AM and 8 PM.** Monday morning calls for a quick decision; Thursday afternoon is for planning a team event; 8 PM is urgent. Most bots answer all of them the same way.
+- **Loyalty programs count visits, not people.** Points don't know that you order vegetarian for the team, bike to work, or share the plan in Slack.
+
+## The Idea
+
+Give the agent a **living customer profile** and let it **read the moment**. Loyaltie pairs each customer's profile with the time of day and picks one of four conversation modes:
+
+| Mode | When | How the agent behaves |
+|---|---|---|
+| **Structured** | Mon–Tue, 8–10 AM | Efficient and to the point. Quick decisions, options in bullets |
+| **Balanced** | 11 AM–1 PM | The default working-hours voice: professional, clear, concise |
+| **Collaborative** | 4–6 PM | More detail and suggestions. Good for planning team events |
+| **Urgent** | 8 PM + | Empathetic and fast. Streamlined choices so dinner is sorted |
+
+## Features
+
+- **Persona-aware conversations.** Identity, communication style, hero dishes, dietary needs, budget comfort range and personal touches are all built into the agent's system prompt.
+- **A profile that learns.** After each session the Profile Updater extracts new learnings (addresses, event types, budget patterns, preferences), tags each with a confidence level and an append, replace or merge action, and applies them only after approval, with a backup first.
+- **Orders that close themselves.** An order state machine (`chatting → confirming → processing → completed`) drafts the order from the conversation, detects confirmation and hands off to **Stripe Checkout**.
+- **Shareable summaries.** When a customer shares plans in Slack, the agent ends with a bullet summary ready to paste.
+- **NVIDIA Nemotron with one flag.** `USE_NEMOTRON=true` routes agents to Llama 3.1 Nemotron Ultra (253B) through OpenRouter, and a performance tracker records latency and tokens per second for side-by-side comparison.
+- **Sessions and logging.** Every session is persisted with a JSON Lines event log so conversations can be resumed and replayed.
+
+## How it works
+
+```
+Recognize  →  Read the room  →  Curate  →  Close  →  Learn
+  load the      detect time      hero dishes,  confirm +     propose profile
+  profile and   of day, pick     budget,       Stripe        updates for
+  order history a mode           headcount     checkout      next time
 ```
 
-# Loyaltie CLI Documentation
+## Tech Stack
 
-This repository contains three AI-powered CLI tools for restaurant ordering and customer service, built with OpenAI Agents.
+| Layer | Technology |
+|---|---|
+| Agents | OpenAI Agents SDK (`@openai/agents`) |
+| Models | GPT-4.1 / GPT-5, or NVIDIA Llama 3.1 Nemotron Ultra via OpenRouter |
+| Backend | Node.js + TypeScript, Express with an OpenAPI spec (`server/`) |
+| Payments | Stripe Checkout |
+| Frontend | Next.js 14, Tailwind CSS (`frontend/`): landing page at `/`, chat app at `/chat` |
+| Data | Customer profiles as JSON, order history as CSV, sessions as JSON Lines |
 
-## Overview
+## Getting Started
 
-- **Chat Ordering CLI** - Interactive ordering system with bulk/single order flows
-- **Workflow Engine** - Standalone workflow for programmatic order processing
-- **Persona Chat CLI** - Customer-aware service agent that adapts to time and preferences
-
-## Quick Start
+### 1. Install
 
 ```bash
-# Install dependencies
-npm install
-
-# Run the interactive ordering CLI # not working currently but functionality exists. 
-npm run chat
-
-# Run the workflow engine (command-line) # not working currently but functionality exists. 
-npm run workflow
-
-# Run the persona-aware chat agent - working 
-npm run persona
+npm install                    # backend + CLIs
+cd frontend && npm install     # web app
 ```
+
+### 2. Configure
+
+Create `.env` in the project root:
+
+```bash
+OPENAI_API_KEY=sk-...
+STRIPE_SECRET_KEY=sk_test_...          # optional: real Stripe Checkout links
+OPENROUTER_API_KEY=sk-or-...           # optional: needed for Nemotron
+USE_NEMOTRON=false                     # true to route agents to NVIDIA Nemotron
+FRONTEND_URL=http://localhost:3000
+```
+
+The frontend reads `NEXT_PUBLIC_API_URL` (defaults to `http://localhost:8000`).
+
+### 3. Run
+
+```bash
+# Terminal 1: API server (http://localhost:8000, docs at /api-docs)
+npm run server
+
+# Terminal 2: web app (http://localhost:3000, chat at /chat)
+cd frontend && npm run dev
+
+# Or talk to the persona agent in the terminal
+npm run persona -- --time=evening
+```
+
+---
+
+## Team
+
+<table>
+  <tr>
+    <td align="center" width="33%">
+      <img src="frontend/public/images/team/saksham.jpg" width="120" alt="Saksham Adhikari"><br>
+      <a href="https://github.com/Tar-ive"><b>Saksham Adhikari</b></a><br>
+      <sub>2x Intern @ AskSLM · 6x Hackathon Winner · Google TPU Research Cloud Grantee</sub>
+    </td>
+    <td align="center" width="33%">
+      <img src="frontend/public/images/team/sharan.jpg" width="120" alt="Sharan Murli"><br>
+      <a href="https://github.com/sharanmurli"><b>Sharan Murli</b></a><br>
+      <sub>MS Computer Science @ USC</sub>
+    </td>
+    <td align="center" width="33%">
+      <img src="frontend/public/images/team/darshan.jpg" width="120" alt="Darshan Rao"><br>
+      <a href="https://github.com/darshanrao"><b>Darshan Rao</b></a><br>
+      <sub>University of Southern California</sub>
+    </td>
+  </tr>
+</table>
+
+---
+
+# CLI Reference
+
+The sections below document the command-line tools in `rc/`.
 
 ## CLI Tools
 
@@ -259,7 +400,7 @@ All agents use:
 ### File Structure
 
 ```
-aitx_hackathon/
+loyaltie/
 ├── rc/
 │   ├── data/
 │   │   └── aniket_profile.json        # Customer profile example
@@ -414,10 +555,10 @@ npx tsx -e "console.log(require('./rc/data/aniket_profile.json'))"
 
 - [ ] Multi-customer profile support in persona CLI
 - [ ] Database integration (replace CSV files)
-- [ ] Web interface for CLIs
-- [ ] Voice input/output support
+- [x] Web interface for CLIs (`frontend/`)
+- [ ] Voice input/output (speech-to-text and text-to-speech)
 - [ ] Order tracking and status updates
-- [ ] Payment processing integration
+- [x] Payment processing integration (Stripe Checkout)
 - [ ] Analytics dashboard for order patterns
 - [ ] Multi-language support
 - [ ] Menu management system
@@ -428,4 +569,3 @@ npx tsx -e "console.log(require('./rc/data/aniket_profile.json'))"
 ## License
 
 ISC
-
