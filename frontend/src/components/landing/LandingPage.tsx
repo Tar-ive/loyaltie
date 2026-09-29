@@ -114,6 +114,11 @@ const steps = [
 
 const stack = ["OpenAI Agents SDK", "NVIDIA Nemotron", "OpenRouter", "Stripe", "Next.js", "Express + OpenAPI", "TypeScript"];
 
+const awards = [
+  { track: "Agentic Track", sponsor: "Weights & Biases" },
+  { track: "Loman AI Track", sponsor: "Voice AI for Restaurants" },
+];
+
 const team = [
   {
     name: "Saksham Adhikari",
@@ -177,6 +182,15 @@ export default function LandingPage() {
         <div className="pointer-events-none absolute -top-48 left-1/2 h-[560px] w-[900px] -translate-x-1/2 rounded-full bg-amber-200/50 blur-3xl" />
         <div className="relative mx-auto max-w-6xl px-6 pb-24 pt-20 md:pt-28">
           <Reveal className="mx-auto max-w-3xl text-center">
+            <div className="mb-8 flex flex-wrap justify-center gap-3">
+              {awards.map((a) => (
+                <span key={a.track} className="inline-flex items-center gap-2 rounded-full border border-amber-300 bg-white/80 px-4 py-1.5 text-sm shadow-sm">
+                  <span aria-hidden>🥇</span>
+                  <span className="font-semibold text-stone-900">{a.track}</span>
+                  <span className="text-stone-500">{a.sponsor}</span>
+                </span>
+              ))}
+            </div>
             <p className="mb-5 text-xs font-semibold uppercase tracking-[0.25em] text-amber-700">Hyper-personalized ordering agents</p>
             <h1 className="mb-6 text-4xl font-bold leading-[1.05] tracking-tight md:text-6xl">
               Every regular deserves{" "}
@@ -342,7 +356,17 @@ export default function LandingPage() {
         <div className="mx-auto max-w-5xl px-6">
           <Reveal className="mx-auto mb-20 max-w-2xl text-center">
             <h2 className="mb-5 text-4xl font-bold tracking-tight text-[#FBF6EC] md:text-6xl">Meet the team.</h2>
-            <p className="text-lg leading-relaxed text-stone-300">We built Loyaltie in a weekend at the AITX hackathon in Austin.</p>
+            <p className="text-lg leading-relaxed text-stone-300">
+              We built Loyaltie in a weekend at the AITX hackathon in Austin, and it took first place in two tracks.
+            </p>
+            <ul className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+              {awards.map((a) => (
+                <li key={a.track} className="rounded-2xl border border-amber-400/30 bg-amber-400/10 px-5 py-3 text-left">
+                  <p className="font-semibold text-amber-300">🥇 {a.track}</p>
+                  <p className="text-sm text-stone-400">{a.sponsor}</p>
+                </li>
+              ))}
+            </ul>
           </Reveal>
           <div className="grid grid-cols-1 gap-y-14 sm:grid-cols-3 sm:gap-x-6">
             {team.map((member, i) => (
